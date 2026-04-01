@@ -1,0 +1,82 @@
+/* ===========================
+      HERO
+=========================== */
+
+.bakers-hero {
+  background: #fcd4e0;
+  text-align: center;
+  padding: 70px 20px;
+  border-bottom: 3px solid #eba8b7;
+}
+
+.bakers-hero h1 {
+  font-size: 2.6rem;
+  color: #a83c50;
+}
+
+.bakers-hero h1 span {
+  color: #d14664;
+}
+
+.bakers-hero p {
+  margin-top: 10px;
+  color: #5a4a4a;
+  font-size: 1.2rem;
+}
+
+
+/* ===========================
+      GRID DE BAKERS
+=========================== */
+
+.bakers-section {
+  padding: 60px 8%;
+}
+
+.bakers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 40px;
+}
+
+
+/* ===========================
+      TARJETAS
+=========================== */
+
+.baker-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.baker-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.baker-card img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.baker-card h3 {
+  margin: 20px 0 5px;
+  color: #c23954;
+}
+
+.baker-card .rol {
+  color: #a83c50;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.baker-card .desc {
+  padding: 0 15px;
+  color: #5a4a4a;
+  font-size: 0.95rem;
+}

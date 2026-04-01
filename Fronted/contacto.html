@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - PastelArte</title>
+  <link rel="stylesheet" href="ccs/style.css">
+  <link rel="stylesheet" href="ccs/contacto.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <nav>
+      <div class="logo">PastelArte</div>
+      <div class="links">
+        <a href="index.html" class="activo">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="personalizar.html">Personalizar</a>
+        <a href="sobre.html">Sobre Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="admin.html">Administrador</a>
+        <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="login.html" class="btn-login">Acceder</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTACTO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Hablemos <span>de tu dulce idea</span></h1>
+      <p>Estamos listos para ayudarte con cotizaciones, pedidos o cualquier consulta.</p>
+    </div>
+
+    <div class="hero-img">
+      <img src="imagen/LOGO1.png" alt="Contacto PastelArte">
+    </div>
+
+    <div class="hero-bg"></div>
+  </section>
+
+  <!-- FORMULARIO -->
+  <section class="contacto-section">
+    <h2 class="title">📩 Envíanos un mensaje</h2>
+
+    <form id="formContacto" class="contacto-form">
+
+      <div class="grupo">
+        <label>👤 Nombre</label>
+        <input type="text" id="nombre" required placeholder="Tu nombre completo">
+      </div>
+
+      <div class="grupo">
+        <label>📧 Correo electrónico</label>
+        <input type="email" id="correo" required placeholder="nombre@correo.com">
+      </div>
+
+      <div class="grupo">
+        <label>📱 Teléfono</label>
+        <input type="text" id="telefono" required placeholder="Ej: 312 000 0000">
+      </div>
+
+      <div class="grupo">
+        <label>📝 Mensaje</label>
+        <textarea id="mensaje" rows="5" required placeholder="Cuéntanos cómo podemos ayudarte"></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary btn-full">Enviar mensaje</button>
+
+    </form>
+
+    
+    <p id="confirmacion" class="confirmacion" style="display:none;">
+      ✔ Tu mensaje ha sido enviado. ¡Gracias por contactarnos!
+    </p>
+
+  </section>
+
+  
+  <section class="info-extra">
+    <h2 class="title">📍 Información de contacto</h2>
+
+    <div class="info-grid">
+
+      <div class="info-item">
+        <h3>📞 Teléfono</h3>
+        <p>312 000 0000</p>
+      </div>
+
+      <div class="info-item">
+        <h3>📧 Correo</h3>
+        <p>contacto@pastelarte.com</p>
+      </div>
+
+      <div class="info-item">
+        <h3>📍 Dirección</h3>
+        <p>Cali, Colombia</p>
+      </div>
+
+      <div class="info-item">
+        <h3>⏰ Horarios</h3>
+        <p>Lun - Sáb: 8am a 7pm <br> Domingos: 9am a 3pm</p>
+      </div>
+
+    </div>
+  </section>
+
+  
+  <footer>
+    <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
+    <p>© 2025 PastelArte - Todos los derechos reservados</p>
+  </footer>
+
+  
+  <script>
+    document.getElementById("formContacto").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      document.getElementById("confirmacion").style.display = "block";
+
+      
+      this.reset();
+
+      
+    });
+  </script>
+
+</body>
+
+</html>

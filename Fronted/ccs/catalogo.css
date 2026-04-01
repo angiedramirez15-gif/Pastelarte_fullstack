@@ -1,0 +1,100 @@
+.catalogo {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #fcefee;
+
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.catalogo h1 {
+  color: #000000;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.productos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 🔥 3 columnas fijas */
+  gap: 30px;
+  padding: 20px;
+  justify-items: center;
+  max-width: 900px;
+  margin: auto;
+
+
+}
+
+.card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  padding: 20px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.precio {
+  display: block;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #d9899b;
+  font-size: 1.2em;
+}
+
+.submenu {
+  position: relative;
+  display: inline-block;
+}
+
+.submenu-items {
+  display: none;
+  position: absolute;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  top: 100%;
+  left: 0;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.submenu-items a {
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+  color: #333;
+}
+
+.submenu-items a:hover {
+  background: #f2f2f2;
+}
+
+.submenu:hover .submenu-items {
+  display: block;
+}
+
+.btn-carrito {
+  background-color: #ff4d6d;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+
+}

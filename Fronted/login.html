@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="ccs/login.css">
+  <link rel="stylesheet" href="ccs/style.css">
+
+  <script>
+
+    function mostrarRegistro() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("registroSection").style.display = "block";
+    }
+
+    function mostrarLogin() {
+      document.getElementById("loginSection").style.display = "block";
+      document.getElementById("registroSection").style.display = "none";
+    }
+
+    function registrar() {
+      const usuario = document.getElementById("nuevoUsuario").value;
+      const clave = document.getElementById("nuevaClave").value;
+      const confirmar = document.getElementById("confirmarClave").value;
+
+      if (usuario === "" || clave === "" || confirmar === "") {
+        alert("⚠️ Por favor completa todos los campos.");
+        return;
+      }
+
+      if (clave !== confirmar) {
+        alert("❌ Las contraseñas no coinciden.");
+        return;
+      }
+
+      localStorage.setItem("usuario", usuario);
+      localStorage.setItem("clave", clave);
+      alert("✅ Registro exitoso. Ahora puedes iniciar sesión.");
+      mostrarLogin();
+    }
+
+
+    function iniciarSesion() {
+      const usuario = document.getElementById("usuario").value;
+      const clave = document.getElementById("clave").value;
+      const guardadoUsuario = localStorage.getItem("usuario");
+      const guardadoClave = localStorage.getItem("clave");
+
+
+      if (usuario === "admin" && clave === "1234") {
+        alert("🔐 Bienvenido Administrador de PastelArte!");
+        window.location.href = "admin.html";
+        return;
+      }
+
+      if (usuario === guardadoUsuario && clave === guardadoClave) {
+        alert("🎂 Bienvenido " + usuario + " a PastelArte!");
+        window.location.href = "index.html";
+      } else {
+        alert("❌ Usuario o contraseña incorrectos.");
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <header class="header">
+    <nav>
+      <div class="logo">PastelArte</div>
+      <div class="links">
+        <a href="index.html" class="activo">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="personalizar.html">Personalizar</a>
+        <a href="sobre.html">Sobre Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="admin.html">Administrador</a>
+        <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="login.html" class="btn-login">Acceder</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="container-lg">
+
+
+      <div id="loginSection" class="login">
+
+        <h2 class="title">Ingresa tu Usuario y Contraseña</h2>
+        <form onsubmit="event.preventDefault(); iniciarSesion();">
+          <h2>Ingresa tu Usuario:</h2>
+          <input type="text" id="usuario" placeholder="Usuario">
+
+          <h2>Ingresa tu Contraseña:</h2>
+          <input type="password" id="clave" placeholder="Contraseña">
+
+          <button type="submit" class="access">Acceder</button><br>
+          <a href="#">¿Olvidaste tu Contraseña?</a><br>
+          <a href="#" onclick="mostrarRegistro()">Registrate</a>
+        </form>
+      </div>
+
+      <div id="registroSection" class="login" style="display:none;">
+        <h2 class="title">Crear cuenta nueva</h2>
+        <form onsubmit="event.preventDefault(); registrar();">
+          <h2>Usuario:</h2>
+          <input type="text" id="nuevoUsuario" placeholder="Nuevo usuario">
+
+          <h2>Contraseña:</h2>
+          <input type="password" id="nuevaClave" placeholder="Contraseña">
+
+          <h2>Confirmar contraseña:</h2>
+          <input type="password" id="confirmarClave" placeholder="Confirmar contraseña">
+
+          <button type="submit" class="access">Registrar</button><br>
+          <a href="#" onclick="mostrarLogin()">Volver al inicio de sesión</a>
+        </form>
+      </div>
+
+      <div class="login-nt">
+
+        <h2 class="title">Inicia Sesión con tus Redes</h2>
+        <div class="icons">
+          <button class="mail"><i class="fas fa-envelope"></i>Acceder con Email</button>
+          <a href="https://www.facebook.com/?locale=es_LA"><button class="fb"><i class="fab fa-facebook-f"></i>Acceder
+              con Facebook</button></a>
+          <button class="tw"><i class="fab fa-twitter"></i>Acceder con Twitter</button>
+          <button class="ig"><i class="fab fa-instagram"></i>Acceder con Instagram</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
+  </footer>
+</body>
+
+</html>

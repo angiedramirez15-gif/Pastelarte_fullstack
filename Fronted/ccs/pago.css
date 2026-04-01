@@ -1,0 +1,64 @@
+.pago-page {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #fcefee;
+  min-height: 70vh;
+  max-width: 700px;
+  margin: auto;
+  border-radius: 20px;
+  line-height: 2.0;
+}
+
+.pago-page h1 {
+  color: #6a2c3c;
+  font-size: 2.5em;
+  font-family: 'Dancing Script', cursive;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+
+.pago-page h2 {
+  color: #5a1f2b;
+  font-size: 1.6em;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.pago-page p,
+.pago-page label {
+  color: #4a2a32;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1em;
+}
+
+
+.pago-page input[type="text"],
+.pago-page input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 1px solid #d8a0b8;
+}
+
+.pago-page .btn-pagar {
+  display: block;
+  text-align: center;
+  font-size: 1.2em;
+  color: white;
+  background-color: #d81b60;
+  padding: 12px;
+  border-radius: 12px;
+  margin: 25px auto;
+  width: 50%;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  border: none;
+}
+
+.pago-page .btn-pagar:hover {
+  background-color: #b51650;
+}

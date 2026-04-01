@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - PastelArte</title>
+  <link rel="stylesheet" href="ccs/style.css">
+  <link rel="stylesheet" href="ccs/perfil.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <nav>
+      <div class="logo">PastelArte</div>
+      <div class="links">
+        <a href="index.html" class="activo">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="personalizar.html">Personalizar</a>
+        <a href="sobre.html">Sobre Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="admin.html">Administrador</a>
+        <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="login.html" class="btn-login">Acceder</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="perfil-hero">
+    <h1>👤 Mi Perfil</h1>
+    <p>Consulta y actualiza tu información personal</p>
+  </section>
+
+  
+  <section class="perfil-contenido">
+
+    
+    <div class="perfil-card">
+      <h2>Información personal</h2>
+
+      <div class="perfil-info">
+
+        <div class="campo">
+          <label>Nombre:</label>
+          <span id="nombreUsuario">Jaider Marimon</span>
+        </div>
+
+        <div class="campo">
+          <label>Correo:</label>
+          <span id="correoUsuario">correo@ejemplo.com</span>
+        </div>
+
+        <div class="campo">
+          <label>Teléfono:</label>
+          <span id="telefonoUsuario">3000000000</span>
+        </div>
+
+        <div class="campo">
+          <label>Dirección:</label>
+          <span id="direccionUsuario">Calle Falsa #123</span>
+        </div>
+
+      </div>
+
+      <button class="btn-editar">Editar información</button>
+    </div>
+
+    
+    <div class="perfil-card">
+      <h2>📦 Historial de pedidos</h2>
+
+      <div class="pedidos-lista">
+
+        <div class="pedido-item">
+          <p><strong>Pedido #001</strong></p>
+          <p>Estado: <span class="estado completado">Completado</span></p>
+          <p>Total: $45.000</p>
+        </div>
+
+        <div class="pedido-item">
+          <p><strong>Pedido #002</strong></p>
+          <p>Estado: <span class="estado pendiente">Pendiente</span></p>
+          <p>Total: $80.000</p>
+        </div>
+
+        <div class="pedido-item">
+          <p><strong>Pedido #003</strong></p>
+          <p>Estado: <span class="estado completado">Completado</span></p>
+          <p>Total: $120.000</p>
+        </div>
+
+      </div>
+
+      <a class="btn-ver-mas">Ver todos los pedidos</a>
+
+    </div>
+
+  </section>
+
+  
+  <footer>
+    <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
+    <p>© 2025 PastelArte - Todos los derechos reservados</p>
+  </footer>
+
+</body>
+
+</html>

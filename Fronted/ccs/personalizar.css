@@ -1,0 +1,69 @@
+
+.personalizar-section {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px;
+  text-align: center;
+}
+
+.personalizar-section .title {
+  color: #D81B60;
+  font-size: 2em;
+}
+
+.personalizar-section .sub {
+  color: #5a3e36;
+  margin-bottom: 30px;
+}
+
+
+.form-box {
+  background: #fcd4e0;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.grupo {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.grupo label {
+  font-weight: bold;
+  color: #5a3e36;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 8px;
+  outline: none;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1em;
+  margin-top: 20px;
+}
+
+
+.resultado {
+  margin-top: 35px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: left;
+}

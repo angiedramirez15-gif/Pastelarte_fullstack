@@ -1,0 +1,301 @@
+
+
+.sobre-hero .hero-text h1 {
+  font-size: 3em;
+  color: #d81b60;
+}
+
+.sobre-hero .hero-text span {
+  color: #e7709c;
+}
+
+.sobre-hero p {
+  font-size: 1.2em;
+  max-width: 550px;
+}
+
+
+.sobre-section {
+  background: #fcd4e0;
+  padding: 60px 40px;
+  margin-top: 0;
+}
+
+.sobre-section.alt {
+  background: #fee9e7;
+}
+
+.title {
+  color: #d81b60;
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sobre-contenido {
+  max-width: 900px;
+  margin: auto;
+  font-size: 1.1em;
+  line-height: 1.7;
+  color: #5a3e36;
+}
+
+.sobre-center {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  font-size: 1.2em;
+  color: #5a3e36;
+}
+
+
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.valor {
+  background: #fcefee;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.valor h3 {
+  color: #d81b60;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.valor p {
+  color: #5a3e36;
+}
+
+.subsecciones {
+  background: #fee9e7;
+  padding: 50px 20px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.subsecciones h2 {
+  color: #d81b60;
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+.subsecciones p {
+  font-size: 1.1em;
+  color: #5a3e36;
+  margin-bottom: 25px;
+}
+
+.sub-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sub-btn {
+  display: inline-block;
+  padding: 15px 25px;
+  background: #fcd4e0;
+  color: #5a3e36;
+  font-weight: bold;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.sub-btn:hover {
+  transform: scale(1.07);
+  background: #e8b7c8;
+}
+
+
+
+.blog-section {
+  padding: 50px 20px;
+  background: #fcd4e0;
+  text-align: center;
+}
+
+.blog-section h2 {
+  color: #d81b60;
+  font-size: 2.2em;
+  margin-bottom: 15px;
+}
+
+.blog-section .sub {
+  font-size: 1.1em;
+  color: #5a3e36;
+  margin-bottom: 40px;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 0 20px;
+}
+
+.blog-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform .3s;
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+}
+
+.blog-card h3 {
+  color: #d81b60;
+  margin-bottom: 10px;
+}
+
+.blog-card p {
+  color: #5a3e36;
+}
+
+
+
+.faq-section {
+  padding: 50px 25px;
+  background: #fee9e7;
+}
+
+.faq-section h2 {
+  color: #d81b60;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.faq-item {
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+.faq-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.faq-item h3 {
+  margin: 0 0 10px 0;
+  color: #d81b60;
+}
+
+.faq-item p {
+  color: #5a3e36;
+  font-size: 0.95rem;
+}
+
+
+
+.politicas {
+  padding: 50px 25px;
+  background: #fcd4e0;
+  text-align: center;
+}
+
+.politicas h2 {
+  color: #d81b60;
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+.politicas p {
+  color: #5a3e36;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+
+
+.sobre-section {
+  padding: 60px 8%;
+  text-align: center;
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+.sobre-section .title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #7a2d3a;
+  /* tono pastelarte */
+}
+
+.sobre-section .sub {
+  color: #555;
+  margin-bottom: 45px;
+  font-size: 1.1rem;
+}
+
+
+.sobre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 35px;
+}
+
+
+.sobre-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 18px;
+  text-align: left;
+  position: relative;
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.sobre-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* TITULOS CON ICONOS GRANDES */
+.sobre-card h3 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #d44557;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sobre-card p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
