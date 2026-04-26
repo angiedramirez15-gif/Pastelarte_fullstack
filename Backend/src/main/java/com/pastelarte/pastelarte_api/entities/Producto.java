@@ -1,4 +1,4 @@
-package com.pastelarte.pastelarte_api.model; // <--- ESTA LÍNEA CAMBIÓ
+package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
 
@@ -9,27 +9,23 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private Long idProducto;
+    private Integer idProducto;
 
     private String nombre;
 
-    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     private Float precio;
 
     private String categoria;
 
-    // --- CONSTRUCTOR VACÍO ---
-    public Producto() {
-    }
+    public Producto() {}
 
-    // --- GETTERS Y SETTERS ---
-    public Long getIdProducto() {
+    public Integer getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(Long idProducto) {
+    public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -62,6 +58,5 @@ public class Producto {
     }
 
     public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
+        this.categoria = categoria;}
 }

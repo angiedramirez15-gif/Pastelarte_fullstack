@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-04-2026 a las 05:15:43
--- Versión del servidor: 10.4.32-MariaDB
+-- Tiempo de generación: 26-04-2026 a las 18:13:31
+-- Versión del servidor: 8.0.45
 -- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,19 +28,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cliente` (
-  `id_cliente` int(11) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  `correo` varchar(30) NOT NULL,
-  `contraseña` varchar(20) NOT NULL,
-  `direccion` varchar(20) DEFAULT NULL,
-  `idrol` int(11) NOT NULL
+  `id_cliente` int NOT NULL,
+  `nombre` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `correo` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `contraseña` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `direccion` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id_rol` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`id_cliente`, `nombre`, `correo`, `contraseña`, `direccion`, `idrol`) VALUES
+INSERT INTO `cliente` (`id_cliente`, `nombre`, `correo`, `contraseña`, `direccion`, `id_rol`) VALUES
 (1, 'Daniela ramirez', 'dani@gmail.com', '1234', 'Cra 7H', 5),
 (2, 'mayra calvo', 'mayra@@gmail.com', '1789', 'Cra 8', 6),
 (3, 'Angie Dazaa', 'daza@gmail.com', '789654', 'pasaje 7 f', 6),
@@ -60,11 +60,11 @@ INSERT INTO `cliente` (`id_cliente`, `nombre`, `correo`, `contraseña`, `direcci
 --
 
 CREATE TABLE `detalle_pedido` (
-  `id_detalle` int(11) NOT NULL,
-  `id_pedido` int(11) NOT NULL,
-  `id_producto` int(11) NOT NULL,
-  `id_personalizacion` int(11) DEFAULT NULL,
-  `cantidad` int(11) NOT NULL,
+  `id_detalle` int NOT NULL,
+  `id_pedido` int NOT NULL,
+  `id_producto` int NOT NULL,
+  `id_personalizacion` int DEFAULT NULL,
+  `cantidad` int NOT NULL,
   `subtotal` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -86,16 +86,16 @@ INSERT INTO `detalle_pedido` (`id_detalle`, `id_pedido`, `id_producto`, `id_pers
 --
 
 CREATE TABLE `metodo_pago` (
-  `idpago` int(11) NOT NULL,
-  `tipo` enum('efectivo','nequi') DEFAULT NULL,
-  `detalle` varchar(30) DEFAULT NULL
+  `id_pago` int NOT NULL,
+  `tipo` enum('efectivo','nequi') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `detalle` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `metodo_pago`
 --
 
-INSERT INTO `metodo_pago` (`idpago`, `tipo`, `detalle`) VALUES
+INSERT INTO `metodo_pago` (`id_pago`, `tipo`, `detalle`) VALUES
 (1, 'nequi', 'Transferencia digital'),
 (2, 'efectivo', 'Pago contra entrega');
 
@@ -106,19 +106,19 @@ INSERT INTO `metodo_pago` (`idpago`, `tipo`, `detalle`) VALUES
 --
 
 CREATE TABLE `pedido` (
-  `idpedido` int(11) NOT NULL,
-  `id_cliente` int(11) NOT NULL,
+  `id_pedido` int NOT NULL,
+  `id_cliente` int NOT NULL,
   `fecha` date NOT NULL,
-  `estado` enum('pendiente','pagado','cancelado') DEFAULT NULL,
-  `total` float DEFAULT NULL,
-  `idpago` int(11) NOT NULL
+  `estado` enum('pendiente','pagado','cancelado') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `id_pago` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pedido`
 --
 
-INSERT INTO `pedido` (`idpedido`, `id_cliente`, `fecha`, `estado`, `total`, `idpago`) VALUES
+INSERT INTO `pedido` (`id_pedido`, `id_cliente`, `fecha`, `estado`, `total`, `id_pago`) VALUES
 (3, 2, '2025-11-01', 'pendiente', 96000, 2),
 (4, 11, '2025-11-30', 'pagado', 40000, 1),
 (5, 13, '2025-11-25', 'cancelado', 28000, 2),
@@ -132,19 +132,19 @@ INSERT INTO `pedido` (`idpedido`, `id_cliente`, `fecha`, `estado`, `total`, `idp
 --
 
 CREATE TABLE `personalizacion` (
-  `id_personalizacion` int(11) NOT NULL,
-  `tamaño` varchar(30) DEFAULT NULL,
-  `sabor` varchar(30) DEFAULT NULL,
-  `decoraciones` enum('fondant','chispas','frutas','flores comestibles') DEFAULT NULL,
-  `descripcion` varchar(100) DEFAULT NULL COMMENT 'aqui se escribe si quiere agregar algun texto en el pastel o algo que quiera personalizar.',
-  `costoextra` float DEFAULT 0
+  `id_personalizacion` int NOT NULL,
+  `tamaño` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sabor` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `decoraciones` enum('fondant','chispas','frutas','flores comestibles') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `descripcion` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'aqui se escribe si quiere agregar algun texto en el pastel o algo que quiera personalizar.',
+  `costo_extra` float DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `personalizacion`
 --
 
-INSERT INTO `personalizacion` (`id_personalizacion`, `tamaño`, `sabor`, `decoraciones`, `descripcion`, `costoextra`) VALUES
+INSERT INTO `personalizacion` (`id_personalizacion`, `tamaño`, `sabor`, `decoraciones`, `descripcion`, `costo_extra`) VALUES
 (1, 'pequeño', 'chocolate', '', 'escribir feliz cumpleaños daniela', 20000),
 (2, 'grande', 'vainilla', '', 'escribir feliz aniversario', 30000),
 (5, 'pequeño', 'chocolate', 'fondant', 'escribir feliz cumpleaños daniela', 20000),
@@ -158,11 +158,11 @@ INSERT INTO `personalizacion` (`id_personalizacion`, `tamaño`, `sabor`, `decora
 --
 
 CREATE TABLE `producto` (
-  `id_producto` int(11) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  `descripcion` tinytext DEFAULT NULL,
+  `id_producto` int NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `descripcion` tinytext COLLATE utf8mb4_general_ci,
   `precio` float NOT NULL,
-  `categoria` enum('pastel','ceroazucar','adicionales','postres') DEFAULT 'pastel'
+  `categoria` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -201,10 +201,10 @@ INSERT INTO `producto` (`id_producto`, `nombre`, `descripcion`, `precio`, `categ
 --
 
 CREATE TABLE `rol` (
-  `id_rol` int(11) NOT NULL,
-  `titulo` varchar(12) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `estado` enum('activo','inactivo') DEFAULT 'activo'
+  `id_rol` int NOT NULL,
+  `titulo` varchar(12) COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_general_ci,
+  `estado` enum('activo','inactivo') COLLATE utf8mb4_general_ci DEFAULT 'activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -226,7 +226,7 @@ ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_cliente`),
   ADD UNIQUE KEY `correo` (`correo`),
   ADD UNIQUE KEY `unique_correo` (`correo`),
-  ADD KEY `idrol` (`idrol`);
+  ADD KEY `idrol` (`id_rol`);
 
 --
 -- Indices de la tabla `detalle_pedido`
@@ -241,15 +241,15 @@ ALTER TABLE `detalle_pedido`
 -- Indices de la tabla `metodo_pago`
 --
 ALTER TABLE `metodo_pago`
-  ADD PRIMARY KEY (`idpago`);
+  ADD PRIMARY KEY (`id_pago`);
 
 --
 -- Indices de la tabla `pedido`
 --
 ALTER TABLE `pedido`
-  ADD PRIMARY KEY (`idpedido`),
+  ADD PRIMARY KEY (`id_pedido`),
   ADD KEY `idcliente` (`id_cliente`),
-  ADD KEY `fk_pedido_pago` (`idpago`);
+  ADD KEY `fk_pedido_pago` (`id_pago`);
 
 --
 -- Indices de la tabla `personalizacion`
@@ -277,43 +277,43 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_cliente` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_detalle` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `metodo_pago`
 --
 ALTER TABLE `metodo_pago`
-  MODIFY `idpago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_pago` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idpedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pedido` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `personalizacion`
 --
 ALTER TABLE `personalizacion`
-  MODIFY `id_personalizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_personalizacion` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_producto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_rol` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
@@ -323,13 +323,13 @@ ALTER TABLE `rol`
 -- Filtros para la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`idrol`) REFERENCES `rol` (`id_rol`);
+  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
 
 --
 -- Filtros para la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  ADD CONSTRAINT `detalle_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`idpedido`),
+  ADD CONSTRAINT `detalle_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
   ADD CONSTRAINT `detalle_pedido_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`),
   ADD CONSTRAINT `detalle_pedido_ibfk_3` FOREIGN KEY (`id_personalizacion`) REFERENCES `personalizacion` (`id_personalizacion`);
 
@@ -337,7 +337,7 @@ ALTER TABLE `detalle_pedido`
 -- Filtros para la tabla `pedido`
 --
 ALTER TABLE `pedido`
-  ADD CONSTRAINT `fk_pedido_pago` FOREIGN KEY (`idpago`) REFERENCES `metodo_pago` (`idpago`),
+  ADD CONSTRAINT `fk_pedido_pago` FOREIGN KEY (`id_pago`) REFERENCES `metodo_pago` (`id_pago`),
   ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`);
 COMMIT;
 
