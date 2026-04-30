@@ -1,7 +1,8 @@
 package com.pastelarte.pastelarte_api.controller;
 
-import com.pastelarte.pastelarte_api.entities.Pedido;
-import com.pastelarte.pastelarte_api.repository.PedidoRepository;
+import com.pastelarte.pastelarte_api.dto.PedidoRequestDTO;
+import com.pastelarte.pastelarte_api.dto.PedidoResponseDTO;
+import com.pastelarte.pastelarte_api.service.PedidoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,35 @@ import java.util.List;
 @CrossOrigin
 public class PedidoController {
 
-    private final PedidoRepository repository;
+    private final PedidoService service;
 
-    public PedidoController(PedidoRepository repository) {
-        this.repository = repository;
+    public PedidoController(PedidoService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Pedido> listar() {
-        return repository.findAll();
+    public List<PedidoResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public PedidoResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public Pedido guardar(@RequestBody Pedido pedido) {
-        return repository.save(pedido);
+    public PedidoResponseDTO guardar(@RequestBody PedidoRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PutMapping("/{id}")
+    public PedidoResponseDTO actualizar(@PathVariable Integer id,
+                                        @RequestBody PedidoRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
-        repository.deleteById(id);
+        service.eliminar(id);
     }
 }

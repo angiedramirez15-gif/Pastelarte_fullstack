@@ -1,7 +1,8 @@
 package com.pastelarte.pastelarte_api.controller;
 
-import com.pastelarte.pastelarte_api.entities.Cliente;
-import com.pastelarte.pastelarte_api.repository.ClienteRepository;
+import com.pastelarte.pastelarte_api.dto.ClienteRequestDTO;
+import com.pastelarte.pastelarte_api.dto.ClienteResponseDTO;
+import com.pastelarte.pastelarte_api.service.ClienteService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,35 @@ import java.util.List;
 @CrossOrigin
 public class ClienteController {
 
-    private final ClienteRepository repository;
+    private final ClienteService service;
 
-    public ClienteController(ClienteRepository repository) {
-        this.repository = repository;
+    public ClienteController(ClienteService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Cliente> listar() {
-        return repository.findAll();
+    public List<ClienteResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public ClienteResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public Cliente guardar(@RequestBody Cliente cliente) {
-        return repository.save(cliente);
+    public ClienteResponseDTO guardar(@RequestBody ClienteRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ClienteResponseDTO actualizar(@PathVariable Integer id,
+                                         @RequestBody ClienteRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
-        repository.deleteById(id);
+        service.eliminar(id);
     }
 }

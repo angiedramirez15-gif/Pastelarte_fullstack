@@ -1,7 +1,8 @@
 package com.pastelarte.pastelarte_api.controller;
 
-import com.pastelarte.pastelarte_api.entities.Rol;
-import com.pastelarte.pastelarte_api.repository.RolRepository;
+import com.pastelarte.pastelarte_api.dto.RolRequestDTO;
+import com.pastelarte.pastelarte_api.dto.RolResponseDTO;
+import com.pastelarte.pastelarte_api.service.RolService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,35 @@ import java.util.List;
 @CrossOrigin
 public class RolController {
 
-    private final RolRepository repository;
+    private final RolService service;
 
-    public RolController(RolRepository repository) {
-        this.repository = repository;
+    public RolController(RolService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Rol> listar() {
-        return repository.findAll();
+    public List<RolResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public RolResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public Rol guardar(@RequestBody Rol rol) {
-        return repository.save(rol);
+    public RolResponseDTO guardar(@RequestBody RolRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PutMapping("/{id}")
+    public RolResponseDTO actualizar(@PathVariable Integer id,
+                                     @RequestBody RolRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
-        repository.deleteById(id);
+        service.eliminar(id);
     }
 }

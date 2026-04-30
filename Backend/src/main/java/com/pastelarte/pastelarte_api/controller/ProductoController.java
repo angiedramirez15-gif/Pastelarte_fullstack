@@ -1,7 +1,8 @@
 package com.pastelarte.pastelarte_api.controller;
 
-import com.pastelarte.pastelarte_api.entities.Producto;
-import com.pastelarte.pastelarte_api.repository.ProductoRepository;
+import com.pastelarte.pastelarte_api.dto.ProductoRequestDTO;
+import com.pastelarte.pastelarte_api.dto.ProductoResponseDTO;
+import com.pastelarte.pastelarte_api.service.ProductoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,35 @@ import java.util.List;
 @CrossOrigin
 public class ProductoController {
 
-    private final ProductoRepository repository;
+    private final ProductoService service;
 
-    public ProductoController(ProductoRepository repository) {
-        this.repository = repository;
+    public ProductoController(ProductoService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Producto> listar() {
-        return repository.findAll();
+    public List<ProductoResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public ProductoResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public Producto guardar(@RequestBody Producto producto) {
-        return repository.save(producto);
+    public ProductoResponseDTO guardar(@RequestBody ProductoRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ProductoResponseDTO actualizar(@PathVariable Integer id,
+                                          @RequestBody ProductoRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
-        repository.deleteById(id);
+        service.eliminar(id);
     }
 }

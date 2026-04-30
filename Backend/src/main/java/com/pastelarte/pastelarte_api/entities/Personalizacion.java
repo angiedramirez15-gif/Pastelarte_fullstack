@@ -11,7 +11,7 @@ public class Personalizacion {
     @Column(name = "id_personalizacion")
     private Integer idPersonalizacion;
 
-    private String tamaño;
+    private String tamano;
 
     private String sabor;
 
@@ -32,12 +32,12 @@ public class Personalizacion {
         this.idPersonalizacion = idPersonalizacion;
     }
 
-    public String getTamaño() {
-        return tamaño;
+    public String getTamano() {
+        return tamano;
     }
 
-    public void setTamaño(String tamaño) {
-        this.tamaño = tamaño;
+    public void setTamano(String tamano) {
+        this.tamano = tamano;
     }
 
     public String getSabor() {

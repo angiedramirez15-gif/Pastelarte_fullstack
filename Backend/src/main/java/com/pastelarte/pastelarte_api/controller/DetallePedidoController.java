@@ -1,7 +1,8 @@
 package com.pastelarte.pastelarte_api.controller;
 
-import com.pastelarte.pastelarte_api.entities.DetallePedido;
-import com.pastelarte.pastelarte_api.repository.DetallePedidoRepository;
+import com.pastelarte.pastelarte_api.dto.DetallePedidoRequestDTO;
+import com.pastelarte.pastelarte_api.dto.DetallePedidoResponseDTO;
+import com.pastelarte.pastelarte_api.service.DetallePedidoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,35 @@ import java.util.List;
 @CrossOrigin
 public class DetallePedidoController {
 
-    private final DetallePedidoRepository repository;
+    private final DetallePedidoService service;
 
-    public DetallePedidoController(DetallePedidoRepository repository) {
-        this.repository = repository;
+    public DetallePedidoController(DetallePedidoService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<DetallePedido> listar() {
-        return repository.findAll();
+    public List<DetallePedidoResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public DetallePedidoResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public DetallePedido guardar(@RequestBody DetallePedido detalle) {
-        return repository.save(detalle);
+    public DetallePedidoResponseDTO guardar(@RequestBody DetallePedidoRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PutMapping("/{id}")
+    public DetallePedidoResponseDTO actualizar(@PathVariable Integer id,
+                                               @RequestBody DetallePedidoRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
-        repository.deleteById(id);
+        service.eliminar(id);
     }
 }

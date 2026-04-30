@@ -1,7 +1,8 @@
 package com.pastelarte.pastelarte_api.controller;
 
-import com.pastelarte.pastelarte_api.entities.Personalizacion;
-import com.pastelarte.pastelarte_api.repository.PersonalizacionRepository;
+import com.pastelarte.pastelarte_api.dto.PersonalizacionRequestDTO;
+import com.pastelarte.pastelarte_api.dto.PersonalizacionResponseDTO;
+import com.pastelarte.pastelarte_api.service.PersonalizacionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +12,35 @@ import java.util.List;
 @CrossOrigin
 public class PersonalizacionController {
 
-    private final PersonalizacionRepository repository;
+    private final PersonalizacionService service;
 
-    public PersonalizacionController(PersonalizacionRepository repository) {
-        this.repository = repository;
+    public PersonalizacionController(PersonalizacionService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Personalizacion> listar() {
-        return repository.findAll();
+    public List<PersonalizacionResponseDTO> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public PersonalizacionResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public Personalizacion guardar(@RequestBody Personalizacion personalizacion) {
-        return repository.save(personalizacion);
+    public PersonalizacionResponseDTO guardar(@RequestBody PersonalizacionRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PutMapping("/{id}")
+    public PersonalizacionResponseDTO actualizar(@PathVariable Integer id,
+                                                 @RequestBody PersonalizacionRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
-        repository.deleteById(id);
+        service.eliminar(id);
     }
 }

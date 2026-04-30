@@ -15,7 +15,7 @@ public class Cliente {
 
     private String correo;
 
-    private String contraseña;
+    private String contrasena;
 
     private String direccion;
 
@@ -48,12 +48,12 @@ public class Cliente {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getDireccion() {
