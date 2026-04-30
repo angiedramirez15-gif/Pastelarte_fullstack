@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-04-2026 a las 18:13:31
+-- Tiempo de generación: 30-04-2026 a las 17:41:09
 -- Versión del servidor: 8.0.45
 -- Versión de PHP: 8.2.12
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `cliente` (
   `id_cliente` int NOT NULL,
-  `nombre` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `correo` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `contraseña` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `direccion` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `correo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `contrasena` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `direccion` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `id_rol` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -40,7 +40,7 @@ CREATE TABLE `cliente` (
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`id_cliente`, `nombre`, `correo`, `contraseña`, `direccion`, `id_rol`) VALUES
+INSERT INTO `cliente` (`id_cliente`, `nombre`, `correo`, `contrasena`, `direccion`, `id_rol`) VALUES
 (1, 'Daniela ramirez', 'dani@gmail.com', '1234', 'Cra 7H', 5),
 (2, 'mayra calvo', 'mayra@@gmail.com', '1789', 'Cra 8', 6),
 (3, 'Angie Dazaa', 'daza@gmail.com', '789654', 'pasaje 7 f', 6),
@@ -60,7 +60,7 @@ INSERT INTO `cliente` (`id_cliente`, `nombre`, `correo`, `contraseña`, `direcci
 --
 
 CREATE TABLE `detalle_pedido` (
-  `id_detalle` int NOT NULL,
+  `id_detalle` bigint NOT NULL,
   `id_pedido` int NOT NULL,
   `id_producto` int NOT NULL,
   `id_personalizacion` int DEFAULT NULL,
@@ -87,8 +87,8 @@ INSERT INTO `detalle_pedido` (`id_detalle`, `id_pedido`, `id_producto`, `id_pers
 
 CREATE TABLE `metodo_pago` (
   `id_pago` int NOT NULL,
-  `tipo` enum('efectivo','nequi') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `detalle` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `tipo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `detalle` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `pedido` (
   `id_pedido` int NOT NULL,
   `id_cliente` int NOT NULL,
   `fecha` date NOT NULL,
-  `estado` enum('pendiente','pagado','cancelado') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `total` double DEFAULT NULL,
   `id_pago` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -133,10 +133,10 @@ INSERT INTO `pedido` (`id_pedido`, `id_cliente`, `fecha`, `estado`, `total`, `id
 
 CREATE TABLE `personalizacion` (
   `id_personalizacion` int NOT NULL,
-  `tamaño` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `sabor` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `decoraciones` enum('fondant','chispas','frutas','flores comestibles') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `descripcion` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'aqui se escribe si quiere agregar algun texto en el pastel o algo que quiera personalizar.',
+  `tamano` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sabor` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `decoraciones` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `costo_extra` float DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -144,7 +144,7 @@ CREATE TABLE `personalizacion` (
 -- Volcado de datos para la tabla `personalizacion`
 --
 
-INSERT INTO `personalizacion` (`id_personalizacion`, `tamaño`, `sabor`, `decoraciones`, `descripcion`, `costo_extra`) VALUES
+INSERT INTO `personalizacion` (`id_personalizacion`, `tamano`, `sabor`, `decoraciones`, `descripcion`, `costo_extra`) VALUES
 (1, 'pequeño', 'chocolate', '', 'escribir feliz cumpleaños daniela', 20000),
 (2, 'grande', 'vainilla', '', 'escribir feliz aniversario', 30000),
 (5, 'pequeño', 'chocolate', 'fondant', 'escribir feliz cumpleaños daniela', 20000),
@@ -159,10 +159,10 @@ INSERT INTO `personalizacion` (`id_personalizacion`, `tamaño`, `sabor`, `decora
 
 CREATE TABLE `producto` (
   `id_producto` int NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `descripcion` tinytext COLLATE utf8mb4_general_ci,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `descripcion` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `precio` float NOT NULL,
-  `categoria` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `categoria` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -170,7 +170,7 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre`, `descripcion`, `precio`, `categoria`) VALUES
-(1, 'Vainilla Dama', 'suave bizcocho con aroma dulce y textura esponjosa', 45000, 'pastel'),
+(1, 'Producto editado', 'actualizado desde console', 22000, 'pastel'),
 (2, 'Torta de fresa', 'bizcochuelo suave con crema de fresa natural', 40000, 'pastel'),
 (3, 'Combinado', 'mitad vainilla,mitad chocolate sabor:sabor perfecto y equilibrado', 55000, 'pastel'),
 (4, 'Chocomani', 'chocolante intenso con toque crocante del mani ', 40000, 'pastel'),
@@ -192,7 +192,9 @@ INSERT INTO `producto` (`id_producto`, `nombre`, `descripcion`, `precio`, `categ
 (20, 'Tres Leches Chocolate', 'Pastel esponjoso bañado en leches con cacao intenso.', 40000, 'adicionales'),
 (21, 'Tres Leches Tradicional', 'Clásica textura húmeda con sabor equilibrado y cremoso.', 25000, 'adicionales'),
 (22, 'Tropical de frutas', 'Bizcocho suave con mezcla fresca de frutas naturales.', 25000, 'adicionales'),
-(23, 'Napoleon', 'Hojaldre crujiente con crema suave y dulzor delicado.', 30000, 'adicionales');
+(23, 'Napoleon', 'Hojaldre crujiente con crema suave y dulzor delicado.', 30000, 'adicionales'),
+(24, 'Prueba', 'Producto test', 10000, 'pastel'),
+(25, 'Prueba2', 'Producto test', 10000, 'pastel');
 
 -- --------------------------------------------------------
 
@@ -202,9 +204,9 @@ INSERT INTO `producto` (`id_producto`, `nombre`, `descripcion`, `precio`, `categ
 
 CREATE TABLE `rol` (
   `id_rol` int NOT NULL,
-  `titulo` varchar(12) COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_general_ci,
-  `estado` enum('activo','inactivo') COLLATE utf8mb4_general_ci DEFAULT 'activo'
+  `titulo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -283,7 +285,7 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `id_detalle` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_detalle` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `metodo_pago`
@@ -307,7 +309,7 @@ ALTER TABLE `personalizacion`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_producto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
