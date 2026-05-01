@@ -1,0 +1,11 @@
+# Ignorar la carpeta de compilación de Java
+target/
+*.class
+
+# Ignorar archivos de configuración de IntelliJ
+.idea/
+*.iml
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
