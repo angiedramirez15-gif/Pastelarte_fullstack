@@ -5,96 +5,172 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PastelArte - Administrador</title>
+
   <link rel="stylesheet" href="ccs/style.css">
   <link rel="stylesheet" href="ccs/admin.css">
 
   <script>
     function validarAcceso() {
+
       const clave = document.getElementById("clave").value;
+
       const seccionAdmin = document.getElementById("panelAdmin");
+
       const formulario = document.getElementById("loginAdmin");
 
       if (clave === "") {
+
         formulario.style.display = "none";
+
         seccionAdmin.style.display = "block";
+
       } else {
+
         alert("⚠️ Clave incorrecta. Acceso denegado.");
+
       }
     }
   </script>
 </head>
 
 <body>
-<header class="header">
-  <nav>
-    <div class="logo">PastelArte</div>
-    <div class="links">
-      <a href="index.html" class="activo">Inicio</a>
-      <a href="catalogo.html">Catálogo</a>
-      <a href="personalizar.html">Personalizar</a>
-      <a href="sobre.html">Sobre Nosotros</a>
-      <a href="contacto.html">Contacto</a>
-      <a href="admin.html">Administrador</a>
-      <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
-      <a href="perfil.html">Perfil</a>
-      <a href="login.html" class="btn-login">Acceder</a>
+
+  <header class="header">
+
+    <nav>
+
+      <div class="logo">PastelArte</div>
+
+      <div class="links">
+
+        <a href="index.html" class="activo">Inicio</a>
+
+        <a href="catalogo.html">Catálogo</a>
+
+        <a href="personalizar.html">Personalizar</a>
+
+        <a href="sobre.html">Sobre Nosotros</a>
+
+        <a href="contacto.html">Contacto</a>
+
+        <a href="admin.html">Administrador</a>
+
+        <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
+
+        <a href="perfil.html">Perfil</a>
+
+        <a href="login.html" class="btn-login">Acceder</a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+  <section class="admin">
+
+    <!-- LOGIN -->
+
+    <div id="loginAdmin">
+
+      <p>Ingrese la clave para acceder al panel de administración.</p>
+
+      <input type="password" id="clave" placeholder="Contraseña">
+
+      <button onclick="validarAcceso()" class="btn entrar">
+        Entrar
+      </button>
+
     </div>
-  </nav>
-</header>
 
-<section class="admin">
+    <!-- PANEL ADMIN -->
 
+    <div id="panelAdmin" style="display: none;">
 
-  <div id="loginAdmin">
-    <p>Ingrese la clave para acceder al panel de administración.</p>
-    <input type="password" id="clave" placeholder="Contraseña">
-    <button onclick="validarAcceso()" class="btn entrar">Entrar</button>
-  </div>
+      <h1>Bienvenido, Administrador 👩🏻‍💻</h1>
 
-  <div id="panelAdmin" style="display: none;">
-    <h1>Bienvenido, Administrador 👩🏻‍💻</h1>
-    <p>Aquí puedes gestionar pedidos, productos y clientes.</p>
+      <p>
+        Aquí puedes gestionar pedidos, productos y clientes.
+      </p>
 
-    <div class="panel-opciones">
+      <div class="panel-opciones">
 
-      <div class="opcion">
-        <h3>📦 Pedidos Recibidos</h3>
-        <ul>
-          <li>
-            <img src="imagen/Pasteles/CHOCOLATE.jpg" alt="Torta de chocolate" class="img-pedido">
-            Pedido #001 -Torta de chocolate - $30.000
-          </li>
-          <li>
-            <img src="imagen/CeroAzucar/Cero-Azucar-Vainilla-con-Chocolate.jpg" alt="Cero-azucar" class="img-pedido">
-            Pedido #002 -Cero-azucar. - $40.000
-          </li>
-        </ul>
+        <!-- PEDIDOS -->
+
+        <div class="opcion">
+
+          <h3>📦 Pedidos Recibidos</h3>
+
+          <button class="btn" id="btnVerPedidos">
+            Ver pedidos
+          </button>
+
+        </div>
+
+        <!-- PRODUCTOS -->
+
+        <div class="opcion">
+
+          <h3>🧁 Productos</h3>
+
+          <button class="btn" id="btnAgregar">
+            Agregar nuevo producto
+          </button>
+
+          <button class="btn" id="btnVerProductos">
+            Editar catálogo
+          </button>
+
+        </div>
+
       </div>
 
-      <div class="opcion">
-        <h3>🧁 Productos</h3>
-        <button class="btn" id="btnAgregar">Agregar nuevo producto</button>
-        <button class="btn" id="btnVerProductos">Editar catálogo</button>
-      </div>
+      <!-- CONTENIDO DINÁMICO -->
+
+      <div id="listaPedidos" style="margin-top:20px;"></div>
+
       <div id="listaProductos" style="margin-top:20px;"></div>
+
+      <!-- FORMULARIO PRODUCTOS -->
+
       <div id="formularioProducto" style="display:none; margin-top:20px;">
 
-        <h3 id="tituloFormulario">Agregar nuevo producto</h3>
+        <h3 id="tituloFormulario">
+          Agregar nuevo producto
+        </h3>
 
-        <input type="text" id="nombreProducto" placeholder="Nombre del producto">
+        <input
+          type="text"
+          id="nombreProducto"
+          placeholder="Nombre del producto"
+        >
 
-        <input type="text" id="descripcionProducto" placeholder="Descripción">
+        <input
+          type="text"
+          id="descripcionProducto"
+          placeholder="Descripción"
+        >
 
-        <input type="number" id="precioProducto" placeholder="Precio">
+        <input
+          type="number"
+          id="precioProducto"
+          placeholder="Precio"
+        >
 
         <button id="guardarProducto" class="btn">
           Guardar producto
         </button>
+
       </div>
+
     </div>
 
-</section>
-<script src="js/admin.js"></script>
+  </section>
+
+  <script src="js/admin.js"></script>
+  <script src="js/pedidos.js"></script>
+  <script src="js/productos.js"></script>
+
 </body>
 
 </html>
