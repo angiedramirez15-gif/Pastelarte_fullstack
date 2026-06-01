@@ -111,7 +111,22 @@
         <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
         <p>© 2025 PastelArte - Todos los derechos reservados</p>
     </footer>
+    <script>
+        window.onload = function() {
 
+          const nombre = localStorage.getItem("nombre");
+
+          if (nombre) {
+            // ocultar botón acceder
+            const btnLogin = document.querySelector(".btn-login");
+            if (btnLogin) btnLogin.style.display = "none";
+
+            // opcional: mostrar nombre
+            const nav = document.querySelector(".links");
+            nav.innerHTML += `<span>👤 ${nombre}</span>`;
+          }
+        }
+    </script>
 </body>
 
 </html>

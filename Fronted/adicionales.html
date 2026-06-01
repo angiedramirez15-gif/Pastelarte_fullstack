@@ -93,6 +93,22 @@
   </footer>
 
  <script src="js/carrito.js"></script>
+  <script>
+    window.onload = function() {
+
+      const nombre = localStorage.getItem("nombre");
+
+      if (nombre) {
+        // ocultar botón acceder
+        const btnLogin = document.querySelector(".btn-login");
+        if (btnLogin) btnLogin.style.display = "none";
+
+        // opcional: mostrar nombre
+        const nav = document.querySelector(".links");
+        nav.innerHTML += `<span>👤 ${nombre}</span>`;
+      }
+    }
+  </script>
 </body>
 
 </html>

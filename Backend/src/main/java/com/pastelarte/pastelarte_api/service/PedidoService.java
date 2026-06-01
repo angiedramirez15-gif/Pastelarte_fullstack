@@ -64,7 +64,12 @@ public class PedidoService {
 
         return convertirAResponse(repository.save(pedido));
     }
-
+    public List<PedidoResponseDTO> listarPorCliente(Integer idCliente) {
+        return repository.findByIdCliente(idCliente)
+                .stream()
+                .map(this::convertirAResponse)
+                .toList();
+    }
     public void eliminar(Integer id) {
         repository.deleteById(id);
     }

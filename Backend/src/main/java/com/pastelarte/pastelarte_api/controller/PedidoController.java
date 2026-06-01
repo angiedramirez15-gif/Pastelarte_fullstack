@@ -23,6 +23,10 @@ public class PedidoController {
         return service.listar();
     }
 
+    @GetMapping("/cliente/{id}")
+    public List<PedidoResponseDTO> pedidosPorCliente(@PathVariable Integer id) {
+        return service.listarPorCliente(id);
+    }
     @GetMapping("/{id}")
     public PedidoResponseDTO buscar(@PathVariable Integer id) {
         return service.buscar(id);

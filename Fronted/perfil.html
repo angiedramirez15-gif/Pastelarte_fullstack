@@ -24,13 +24,14 @@
         <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
         <a href="perfil.html">Perfil</a>
         <a href="login.html" class="btn-login">Acceder</a>
+        <a href="#" onclick="cerrarSesion()" class="btn-logout">Cerrar sesión</a>
       </div>
     </nav>
   </header>
 
   <!-- HERO -->
   <section class="perfil-hero">
-    <h1>👤 Mi Perfil</h1>
+    <h1>👤 Perfil</h1>
     <p>Consulta y actualiza tu información personal</p>
   </section>
 
@@ -64,15 +65,14 @@
         </div>
 
       </div>
-
-      <button class="btn-editar">Editar información</button>
+      <button class="btn-editar" onclick="editarPerfil()">Editar información</button>
     </div>
 
     
     <div class="perfil-card">
       <h2>📦 Historial de pedidos</h2>
 
-      <div class="pedidos-lista">
+      <div id="pedidos" class="pedidos-lista">
 
         <div class="pedido-item">
           <p><strong>Pedido #001</strong></p>
@@ -105,7 +105,113 @@
     <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
     <p>© 2025 PastelArte - Todos los derechos reservados</p>
   </footer>
+  <script>
 
+    // 🔹 CERRAR SESIÓN
+    function cerrarSesion() {
+      localStorage.removeItem("clienteId");
+      localStorage.removeItem("nombre");
+
+      alert("Sesión cerrada");
+      window.location.href = "login.html";
+    }
+
+    function editarPerfil() {
+
+  const clienteId = localStorage.getItem("clienteId");
+
+  // 🔹 PRIMERO traemos datos actuales
+  fetch(`http://localhost:8080/clientes/${clienteId}`)
+    .then(res => res.json())
+    .then(data => {
+
+      const nombre = prompt("Nuevo nombre:", data.nombre);
+      const correo = prompt("Nuevo correo:", data.correo);
+      const direccion = prompt("Nueva dirección:", data.direccion);
+
+      const updatedData = {
+        nombre: nombre,
+        correo: correo,
+        contrasena: data.contrasena,
+        direccion: direccion,
+        idRol: data.idRol
+      };
+
+      return fetch(`http://localhost:8080/clientes/${clienteId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedData)
+      });
+
+    })
+    .then(res => res.json())
+    .then(() => {
+      alert("Datos actualizados ✅");
+      location.reload();
+    })
+    .catch(err => console.error("❌ Error:", err));
+}
+
+    // 🔹 CUANDO CARGA LA PÁGINA
+    window.onload = function () {
+
+      const clienteId = localStorage.getItem("clienteId");
+
+      if (!clienteId) {
+        alert("Debes iniciar sesión");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // 🔹 CARGAR PERFIL
+      fetch(`http://localhost:8080/clientes/${clienteId}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("nombreUsuario").innerText = data.nombre;
+          document.getElementById("correoUsuario").innerText = data.correo;
+          document.getElementById("direccionUsuario").innerText = data.direccion;
+
+          localStorage.setItem("nombre", data.nombre);
+        });
+
+      // 🔹 CONTROL BOTONES LOGIN / LOGOUT
+      const nombre = localStorage.getItem("nombre");
+
+      if (nombre) {
+        document.querySelector(".btn-login").style.display = "none";
+
+        const span = document.createElement("span");
+        span.innerText = "👤 " + nombre;
+        document.querySelector(".links").appendChild(span);
+      } else {
+        document.querySelector(".btn-logout").style.display = "none";
+      }
+
+      // 🔹 CARGAR PEDIDOS
+      fetch(`http://localhost:8080/pedidos/cliente/${clienteId}`)
+        .then(res => res.json())
+        .then(data => {
+
+          const contenedor = document.getElementById("pedidos");
+          contenedor.innerHTML = "";
+
+          data.forEach(p => {
+            contenedor.innerHTML += `
+              <div>
+                <p>Pedido #${p.idPedido}</p>
+                <p>Total: ${p.total}</p>
+              </div>
+            `;
+          });
+
+        });
+
+    };
+
+  </script>
 </body>
+
 
 </html>
