@@ -49,14 +49,6 @@ body {
     }
 }*/
 
-.Jaider {
-    position: absolute;
-    top: 250px;
-    left: 730px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
 
 .login .title {
     margin: 0;
@@ -135,24 +127,6 @@ body {
     animation-fill-mode: forwards;
 }
 
-/*@keyframes border2{
-    0%{
-        border-radius: 0%;
-    }
-    100%{
-        border-top-right-radius: 20%;
-        border-bottom-right-radius: 20%;
-    }
-}*/
-
-.Dany {
-    position: absolute;
-    top: 250px;
-    left: 1090px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
 
 .login-nt .title {
     margin: 0;

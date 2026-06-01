@@ -104,6 +104,37 @@
 </body>
 
 </html>
+<script>
+  function cargarDatos() {
+    fetch("http://localhost:8080/detalle-pedidos")
+      .then(res => res.json())
+      .then(data => {
+        console.log("DATOS:", data);
+
+        const contenedor = document.getElementById("lista");
+        if (!contenedor) {
+          console.error("No existe el elemento con id 'lista'");
+          return;
+        }
+
+        contenedor.innerHTML = "";
+
+        data.forEach(item => {
+          contenedor.innerHTML += `
+            <div>
+              <p>ID: ${item.idDetalle}</p>
+              <p>Producto: ${item.idProducto}</p>
+              <p>Cantidad: ${item.cantidad}</p>
+              <p>Subtotal: ${item.subtotal}</p>
+            </div>
+          `;
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  window.onload = cargarDatos;
+</script>
 </body>
 
 </html>

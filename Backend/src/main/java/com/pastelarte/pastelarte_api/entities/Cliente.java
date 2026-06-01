@@ -15,6 +15,7 @@ public class Cliente {
 
     private String correo;
 
+    @Column(name = "contrasena")
     private String contrasena;
 
     private String direccion;
@@ -55,7 +56,6 @@ public class Cliente {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-
     public String getDireccion() {
         return direccion;
     }

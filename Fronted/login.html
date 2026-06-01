@@ -8,61 +8,7 @@
   <link rel="stylesheet" href="ccs/login.css">
   <link rel="stylesheet" href="ccs/style.css">
 
-  <script>
 
-    function mostrarRegistro() {
-      document.getElementById("loginSection").style.display = "none";
-      document.getElementById("registroSection").style.display = "block";
-    }
-
-    function mostrarLogin() {
-      document.getElementById("loginSection").style.display = "block";
-      document.getElementById("registroSection").style.display = "none";
-    }
-
-    function registrar() {
-      const usuario = document.getElementById("nuevoUsuario").value;
-      const clave = document.getElementById("nuevaClave").value;
-      const confirmar = document.getElementById("confirmarClave").value;
-
-      if (usuario === "" || clave === "" || confirmar === "") {
-        alert("⚠️ Por favor completa todos los campos.");
-        return;
-      }
-
-      if (clave !== confirmar) {
-        alert("❌ Las contraseñas no coinciden.");
-        return;
-      }
-
-      localStorage.setItem("usuario", usuario);
-      localStorage.setItem("clave", clave);
-      alert("✅ Registro exitoso. Ahora puedes iniciar sesión.");
-      mostrarLogin();
-    }
-
-
-    function iniciarSesion() {
-      const usuario = document.getElementById("usuario").value;
-      const clave = document.getElementById("clave").value;
-      const guardadoUsuario = localStorage.getItem("usuario");
-      const guardadoClave = localStorage.getItem("clave");
-
-
-      if (usuario === "admin" && clave === "1234") {
-        alert("🔐 Bienvenido Administrador de PastelArte!");
-        window.location.href = "admin.html";
-        return;
-      }
-
-      if (usuario === guardadoUsuario && clave === guardadoClave) {
-        alert("🎂 Bienvenido " + usuario + " a PastelArte!");
-        window.location.href = "index.html";
-      } else {
-        alert("❌ Usuario o contraseña incorrectos.");
-      }
-    }
-  </script>
 </head>
 
 <body>
@@ -84,7 +30,7 @@
   </header>
 
   <div class="container">
-    <div class="container-lg">
+    <div> class="container-lg">
 
 
       <div id="loginSection" class="login">
@@ -105,9 +51,14 @@
 
       <div id="registroSection" class="login" style="display:none;">
         <h2 class="title">Crear cuenta nueva</h2>
+
         <form onsubmit="event.preventDefault(); registrar();">
-          <h2>Usuario:</h2>
-          <input type="text" id="nuevoUsuario" placeholder="Nuevo usuario">
+
+          <h2>Nombre:</h2>
+          <input type="text" id="nuevoNombre" placeholder="Nombre completo">
+
+          <h2>Correo:</h2>
+          <input type="email" id="nuevoCorreo" placeholder="Correo">
 
           <h2>Contraseña:</h2>
           <input type="password" id="nuevaClave" placeholder="Contraseña">
@@ -115,8 +66,12 @@
           <h2>Confirmar contraseña:</h2>
           <input type="password" id="confirmarClave" placeholder="Confirmar contraseña">
 
+          <h2>Dirección:</h2>
+          <input type="text" id="direccion" placeholder="Dirección">
+
           <button type="submit" class="access">Registrar</button><br>
           <a href="#" onclick="mostrarLogin()">Volver al inicio de sesión</a>
+
         </form>
       </div>
 
@@ -138,6 +93,7 @@
   <footer>
     <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
   </footer>
+  <script src="js/registros.js"></script>
 </body>
 
 </html>
