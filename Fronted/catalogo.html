@@ -13,7 +13,10 @@
   <header class="header">
 
     <nav>
-      <div class="logo">PastelArte</div>
+      <a href="index.html" class="logo-container">
+        <img src="imagen/pastel-de-cumpleanos.png" alt="Logo PastelArte" class="logo-img">
+        <span class="logo-text">PastelArte</span>
+      </a>
       <div class="links">
         <a href="index.html" class="activo">Inicio</a>
         <a href="catalogo.html">Catálogo</a>
@@ -27,7 +30,7 @@
       </div>
     </nav>
   </header>
- <!--Catálogo de productos--->
+  <!--Catálogo de productos--->
   <section class="catalogo">
     <h1>Nuestro Catalogo</h1>
 
@@ -71,9 +74,9 @@
     <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
   </footer>
 
-<script src="js/carrito.js"></script>
+  <script src="js/carrito.js"></script>
   <script>
-    window.onload = function() {
+    window.onload = function () {
 
       const nombre = localStorage.getItem("nombre");
 

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PastelArte - Inicio</title>
   <link rel="stylesheet" href="ccs/style.css">
 </head>
-
 <body>
 
-  
   <header class="header">
     <nav>
-      <div class="logo">PastelArte</div>
+      <a href="index.html" class="logo-container">
+        <img src="imagen/pastel-de-cumpleanos.png" alt="Logo PastelArte" class="logo-img">
+        <span class="logo-text">PastelArte</span>
+      </a>
       <div class="links">
         <a href="index.html" class="activo">Inicio</a>
         <a href="catalogo.html">Catálogo</a>
@@ -28,29 +28,24 @@
     </nav>
   </header>
 
-  
   <section class="hero">
     <div class="hero-text">
       <h1>Exquisitos Postres <span>Hechos con Arte</span></h1>
-      <p>Sabores únicos, diseños elegantes y una experiencia dulce inolvidable.
-        Descubre creaciones hechas con dedicación y pasión.</p>
+      <p>Sabores únicos, diseños elegantes y una experiencia dulce inolvidable. Descubre creaciones hechas con dedicación y pasión.</p>
       <a href="catalogo.html" class="btn-primary">Explorar catálogo</a>
     </div>
 
     <div class="hero-img">
-      <img src="imagen/LOGO1.png" alt="PastelArte">
+      <img src="imagen/torta_de_fresa-removebg-preview.png" alt="Nuestra deliciosa Torta de Fresa">
     </div>
-
     <div class="hero-bg"></div>
   </section>
 
- 
   <section class="destacados">
     <h2>Nuestros productos destacados</h2>
     <p class="sub">Una selección especial de nuestras delicias más populares</p>
 
     <div class="cards">
-
       <div class="card">
         <img src="imagen/Adicionales/EMPACADO-TRADICIONAL.jpg" alt="Postres Tres Leche">
         <h3>Postres Tres Leche</h3>
@@ -71,14 +66,11 @@
         <p>Esponjoso bizcocho de vainilla con toque tropical de Coco.</p>
         <a href="ceroazucar.html" class="btn-secondary">Lo quiero</a>
       </div>
-
     </div>
   </section>
 
- 
   <section class="why">
     <h2>¿Por qué elegir PastelArte?</h2>
-
     <div class="why-grid">
       <div class="why-item">
         <h3>Ingredientes Premium</h3>
@@ -99,38 +91,29 @@
     </div>
   </section>
 
-  
   <section class="sobre">
     <div class="sobre-content">
       <h2>Sobre Nosotros</h2>
-      <p>
-        En <strong>PastelArte</strong>, combinamos creatividad, pasión y técnica profesional para crear
-        postres que no solo se ven increíbles, sino que también deleitan a cada bocado.
-      </p>
+      <p>En <strong>PastelArte</strong>, combinamos creatividad, pasión y técnica profesional para crear postres que no solo se ven increíbles, sino que también deleitan a cada bocado.</p>
     </div>
   </section>
 
-  
   <footer>
     <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
     <p>© 2025 PastelArte - Todos los derechos reservados</p>
   </footer>
+
   <script>
-    window.onload = function() {
-
+    window.onload = function () {
       const nombre = localStorage.getItem("nombre");
-
       if (nombre) {
-        // ocultar botón acceder
         const btnLogin = document.querySelector(".btn-login");
         if (btnLogin) btnLogin.style.display = "none";
 
-        // opcional: mostrar nombre
         const nav = document.querySelector(".links");
-        nav.innerHTML += `<span>👤 ${nombre}</span>`;
+        if (nav) nav.innerHTML += `<span>👤 ${nombre}</span>`;
       }
     }
   </script>
 </body>
-
 </html>

@@ -36,12 +36,43 @@ nav {
   align-items: center;
 }
 
-.logo {
-  font-size: 1.7em;
-  font-weight: 900;
-  color: #e75b8d;
+/* ==========================================================================
+   NUEVO LOGO INTEGRADO (ESTILO YOUTUBE)
+   ========================================================================== */
+
+/* Contenedor que une foto y texto en un solo bloque interactivo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;                /* Separación entre el pastel y el texto */
+  text-decoration: none;    /* Quita la línea de enlace */
+  cursor: pointer;
 }
 
+/* Control estricto del pastelito para que NO estire el nav hacia arriba */
+.logo-img {
+  height: 40px;             /* Altura perfecta para mantener el menú estilizado */
+  width: auto;              /* Mantiene la proporción de tu PNG */
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+/* El texto al lado del pastel con tu estilo original */
+.logo-text {
+  font-size: 1.7em;
+  font-weight: 900;
+  color: #e75b8d;           /* Tu color rosado original */
+  transition: opacity 0.2s ease;
+}
+
+/* EFECTO YOUTUBE: Al pasar el mouse por encima de CUALQUIER parte del bloque... */
+.logo-container:hover .logo-text {
+  opacity: 0.85;            /* El texto cambia sutilmente de tono */
+}
+
+.logo-container:hover .logo-img {
+  transform: scale(1.08);   /* El pastelito crece un poco de forma fluida */
+}
 nav .links a {
   margin-left: 20px;
   text-decoration: none;
@@ -75,7 +106,7 @@ nav .links a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 80px 15%;
+  padding: 80px 17%;
   position: relative;
 }
 
@@ -116,9 +147,21 @@ nav .links a:hover {
   background: #c2185b;
 }
 
+.hero-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
 .hero-img img {
-  width: 340px;
+  max-width: 100%;
+  margin-right: 400px;
+  width: 430px; /* Escalamos un poco más la torta para que tenga impacto */
+  height: auto;
+  position: absolute;
   animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08)); /* Le da una sombra suave real solo a la torta */
 }
 
 .hero-bg {
