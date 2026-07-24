@@ -47,4 +47,9 @@ public class PedidoController {
     public void eliminar(@PathVariable Integer id) {
         service.eliminar(id);
     }
+
+    @PutMapping("/{id}/confirmar-pago")
+    public PedidoResponseDTO confirmarPago(@PathVariable Integer id) {
+        return service.confirmarPago(id);
+    }
 }

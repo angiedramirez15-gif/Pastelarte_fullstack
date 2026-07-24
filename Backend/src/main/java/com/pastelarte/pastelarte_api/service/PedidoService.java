@@ -44,6 +44,8 @@ public class PedidoService {
         pedido.setEstado(dto.getEstado());
         pedido.setTotal(dto.getTotal());
         pedido.setIdPago(dto.getIdPago());
+        pedido.setComprobante(dto.getComprobante());
+        pedido.setNumeroNequi(dto.getNumeroNequi());
 
         return convertirAResponse(repository.save(pedido));
     }
@@ -61,6 +63,21 @@ public class PedidoService {
         pedido.setEstado(dto.getEstado());
         pedido.setTotal(dto.getTotal());
         pedido.setIdPago(dto.getIdPago());
+        pedido.setComprobante(dto.getComprobante());
+        pedido.setNumeroNequi(dto.getNumeroNequi());
+
+        return convertirAResponse(repository.save(pedido));
+    }
+
+    public PedidoResponseDTO confirmarPago(Integer id) {
+
+        Pedido pedido = repository.findById(id).orElse(null);
+
+        if (pedido == null) {
+            return null;
+        }
+
+        pedido.setEstado("pagado");
 
         return convertirAResponse(repository.save(pedido));
     }
@@ -84,6 +101,8 @@ public class PedidoService {
         dto.setEstado(pedido.getEstado());
         dto.setTotal(pedido.getTotal());
         dto.setIdPago(pedido.getIdPago());
+        dto.setComprobante(pedido.getComprobante());
+        dto.setNumeroNequi(pedido.getNumeroNequi());
 
         return dto;
     }

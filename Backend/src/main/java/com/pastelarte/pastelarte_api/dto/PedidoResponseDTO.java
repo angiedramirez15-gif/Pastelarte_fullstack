@@ -15,4 +15,6 @@ public class PedidoResponseDTO {
     private String estado;
     private Double total;
     private Integer idPago;
+    private String comprobante;
+    private String numeroNequi;
 }

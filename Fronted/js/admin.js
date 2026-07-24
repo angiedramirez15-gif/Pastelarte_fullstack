@@ -1,4 +1,3 @@
-// VARIABLES GLOBALES
 
 // PRODUCTOS
 
@@ -24,6 +23,14 @@ const listaPedidos =
 
 const btnVerPedidos =
     document.getElementById("btnVerPedidos");
+
+// CLIENTES
+
+const listaClientes =
+    document.getElementById("listaClientes");
+
+const btnVerClientes =
+    document.getElementById("btnVerClientes");
 
 // VARIABLE GLOBAL EDITAR
 

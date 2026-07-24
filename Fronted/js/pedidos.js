@@ -37,7 +37,8 @@ async function cargarPedidos() {
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th>Total</th>
-                        <th>Pago</th>
+                        <th>Método de pago</th>
+                        <th>Comprobante</th>
                         <th>Acciones</th>
                     </tr>
 
@@ -48,6 +49,22 @@ async function cargarPedidos() {
 
         pedidos.forEach((pedido) => {
 
+            const metodoPago = pedido.idPago === 1 ? "Nequi 💜" : "Efectivo 💵";
+
+            let comprobanteHtml = "—";
+            if (pedido.comprobante) {
+                comprobanteHtml = `
+                    <a href="${pedido.comprobante}" target="_blank">
+                        <img src="${pedido.comprobante}" alt="Comprobante" style="max-width:60px; border-radius:6px;">
+                    </a>
+                    ${pedido.numeroNequi ? `<br><small>Nº: ${pedido.numeroNequi}</small>` : ""}
+                `;
+            }
+
+            const botonConfirmar = pedido.estado === "pagado"
+                ? ""
+                : `<button onclick="confirmarPago(${pedido.idPedido})" class="btn-editar">Confirmar pago</button>`;
+
             html += `
                 <tr>
 
@@ -57,13 +74,17 @@ async function cargarPedidos() {
 
                     <td>${pedido.fecha}</td>
 
-                    <td>${pedido.estado}</td>
+                    <td><span class="estado-${pedido.estado}">${pedido.estado}</span></td>
 
                     <td>$${pedido.total}</td>
 
-                    <td>${pedido.idPago}</td>
+                    <td>${metodoPago}</td>
+
+                    <td>${comprobanteHtml}</td>
 
                     <td>
+
+                        ${botonConfirmar}
 
                         <button
                             onclick="cambiarEstado(${pedido.idPedido})"
@@ -127,6 +148,29 @@ async function eliminarPedido(id) {
             "Error eliminando pedido:",
             error
         );
+    }
+}
+
+// CONFIRMAR PAGO (revisas el comprobante en tu celular y lo apruebas)
+
+async function confirmarPago(id) {
+
+    const confirmar = confirm("¿Confirmar que el pago de este pedido es válido?");
+
+    if (!confirmar) return;
+
+    try {
+
+        await fetch(`${API_PEDIDOS}/${id}/confirmar-pago`, {
+            method: "PUT"
+        });
+
+        alert("✅ Pago confirmado. El pedido ahora está marcado como 'pagado'.");
+
+        cargarPedidos();
+
+    } catch (error) {
+        console.error("Error confirmando el pago:", error);
     }
 }
 

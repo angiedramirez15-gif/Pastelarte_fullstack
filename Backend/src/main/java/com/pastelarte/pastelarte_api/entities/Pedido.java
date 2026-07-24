@@ -24,6 +24,13 @@ public class Pedido {
     @Column(name = "id_pago")
     private Integer idPago;
 
+    @Lob
+    @Column(name = "comprobante", columnDefinition = "LONGTEXT")
+    private String comprobante;
+
+    @Column(name = "numero_nequi")
+    private String numeroNequi;
+
     public Pedido() {}
 
     public Integer getIdPedido() {
@@ -72,4 +79,20 @@ public class Pedido {
 
     public void setIdPago(Integer idPago) {
         this.idPago = idPago;}
+
+    public String getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(String comprobante) {
+        this.comprobante = comprobante;
+    }
+
+    public String getNumeroNequi() {
+        return numeroNequi;
+    }
+
+    public void setNumeroNequi(String numeroNequi) {
+        this.numeroNequi = numeroNequi;
+    }
 }

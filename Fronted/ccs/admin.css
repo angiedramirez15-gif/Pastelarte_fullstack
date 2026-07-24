@@ -220,3 +220,50 @@
   background-color: #e754a3;
   transform: scale(1.02);
 }
+/* === DASHBOARD ADMIN === */
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.dashboard-card {
+  background-color: #fff0f5;
+  border: 1px solid #ffd6e8;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+.dashboard-card h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #a8447a;
+}
+
+.dashboard-card p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Etiquetas de estado del pedido */
+
+.estado-pendiente_efectivo,
+.estado-pendiente_revision {
+  color: #b8860b;
+  font-weight: bold;
+}
+
+.estado-pagado {
+  color: #2e8b57;
+  font-weight: bold;
+}
+
+.estado-cancelado {
+  color: #c0392b;
+  font-weight: bold;
+}

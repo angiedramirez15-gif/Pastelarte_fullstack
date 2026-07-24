@@ -1,7 +1,6 @@
-
-function agregarAlCarrito(nombre, precio, imagen) {
+function agregarAlCarrito(idProducto, nombre, precio, imagen) {
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.push({ nombre, precio, imagen });
+  carrito.push({ idProducto, nombre, precio, imagen });
   localStorage.setItem("carrito", JSON.stringify(carrito));
   alert(`${nombre} ha sido agregado al carrito 🛒`);
 }
@@ -112,6 +111,7 @@ function guardarPastelPersonalizado(sabor, tamano, decoraciones, mensaje, imagen
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
   carrito.push({
+    idProducto: 27, // "Pastel Personalizado" -> ver Data/parche_pastelarte.sql
     nombre: "Pastel Personalizado",
     precio: precio,
     imagen: imagen,
@@ -130,4 +130,3 @@ function guardarPastelPersonalizado(sabor, tamano, decoraciones, mensaje, imagen
   // opcional: redirigir al carrito
   window.location.href = "carrito.html";
 }
-

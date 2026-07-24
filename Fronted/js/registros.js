@@ -78,6 +78,7 @@ function iniciarSesion() {
 
         localStorage.setItem("clienteId", usuario.idCliente);
         localStorage.setItem("nombre", usuario.nombre);
+        localStorage.setItem("idRol", usuario.idRol);
 
       if (usuario.idRol === 5) {
         window.location.href = "admin.html";
