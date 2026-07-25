@@ -70,7 +70,7 @@ async function cargarPedidos() {
 
                     <td>${pedido.idPedido}</td>
 
-                    <td>${pedido.idCliente}</td>
+                    <td>${pedido.nombreCliente || "—"} <small>(ID: ${pedido.idCliente})</small></td>
 
                     <td>${pedido.fecha}</td>
 
