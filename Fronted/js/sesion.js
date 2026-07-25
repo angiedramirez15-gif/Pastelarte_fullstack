@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
 
   const nombre = localStorage.getItem("nombre");
@@ -20,6 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
       linkPerfil.textContent = "⚙️ Panel de administración";
       linkPerfil.href = "admin.html";
     }
+  }
+
+  // --- Link "Gestión" en el menú principal: solo visible para administradores logueados ---
+  const linkGestion = document.getElementById("linkGestion");
+  if (linkGestion) {
+    linkGestion.style.display = (idRol === "5") ? "inline-block" : "none";
   }
 
   // --- Menú desplegable ---
