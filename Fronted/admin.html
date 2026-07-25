@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PastelArte - Administrador</title>
+  <title>PastelArte - Gestión</title>
 
   <link rel="stylesheet" href="ccs/style.css">
   <link rel="stylesheet" href="ccs/admin.css">
@@ -32,52 +32,29 @@
 
 <body>
 
-<header class="header">
+<header class="admin-topbar">
 
-  <nav>
+  <a href="index.html" class="admin-brand">
+    <img src="imagen/pastel-de-cumpleanos.png" alt="Logo PastelArte" class="admin-brand-logo">
+    <span class="admin-brand-text">PastelArte <span class="admin-brand-tag">Gestión</span></span>
+  </a>
 
-    <a href="index.html" class="logo-container">
-      <img src="imagen/pastel-de-cumpleanos.png" alt="Logo PastelArte" class="logo-img">
-      <span class="logo-text">PastelArte</span>
-    </a>
+  <div class="admin-topbar-right">
 
-    <div class="links">
+    <div class="user-menu" id="userMenu" style="display:none;">
+      <button id="btnUsuario">
+        <span class="admin-avatar">👤</span> <span id="nombreUsuario"></span> ▼
+      </button>
 
-      <a href="index.html" class="activo">Inicio</a>
-
-      <a href="catalogo.html">Catálogo</a>
-
-      <a href="personalizar.html">Personalizar</a>
-
-      <a href="sobre.html">Sobre Nosotros</a>
-
-      <a href="contacto.html">Contacto</a>
-
-      <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
-
-      <div class="user-menu" id="userMenu" style="display:none;">
-        <button id="btnUsuario">
-          👤 <span id="nombreUsuario"></span> ▼
-        </button>
-
-        <div class="dropdown" id="menuUsuario">
-
-          <a href="perfil.html">
-            Mi perfil
-          </a>
-
-          <a href="#" id="cerrarSesion">
-            Cerrar sesión
-          </a>
-
-        </div>
+      <div class="dropdown" id="menuUsuario">
+        <a href="perfil.html">Mi perfil</a>
+        <a href="#" id="cerrarSesion">Cerrar sesión</a>
       </div>
-
-      <a href="login.html" class="btn-login">Acceder</a>
-
     </div>
 
-  </nav>
+    <a href="login.html" class="btn-login">Acceder</a>
+
+  </div>
 
 </header>
 
@@ -87,7 +64,7 @@
 
   <div id="accesoDenegado" style="display:none;">
 
-    <p>🚫 No tienes permisos de administrador para ver esta página.</p>
+    <p>🚫 No tienes permisos para ver esta página.</p>
 
     <a href="login.html" class="btn entrar">Iniciar sesión</a>
 
@@ -97,11 +74,10 @@
 
   <div id="panelAdmin" style="display: none;">
 
-    <h1>Bienvenido, Administrador 👩🏻‍💻</h1>
-
-    <p>
-      Aquí puedes gestionar pedidos, productos y clientes.
-    </p>
+    <div class="admin-header">
+      <h1>Resumen general</h1>
+      <p>Gestiona pedidos, catálogo y clientes registrados.</p>
+    </div>
 
     <!-- DASHBOARD -->
 
@@ -112,41 +88,37 @@
       <!-- PEDIDOS -->
 
       <div class="opcion">
-
-        <h3>📦 Pedidos Recibidos</h3>
-
+        <span class="opcion-icono">📦</span>
+        <h3>Pedidos recibidos</h3>
+        <p class="opcion-desc">Revisa, confirma pagos y actualiza el estado de cada pedido.</p>
         <button class="btn" id="btnVerPedidos">
           Ver pedidos
         </button>
-
       </div>
 
       <!-- PRODUCTOS -->
 
       <div class="opcion">
-
-        <h3>🧁 Productos</h3>
-
+        <span class="opcion-icono">🧁</span>
+        <h3>Catálogo</h3>
+        <p class="opcion-desc">Agrega productos nuevos o edita los existentes.</p>
         <button class="btn" id="btnAgregar">
-          Agregar nuevo producto
+          Agregar producto
         </button>
-
-        <button class="btn" id="btnVerProductos">
+        <button class="btn btn-secundario" id="btnVerProductos">
           Editar catálogo
         </button>
-
       </div>
 
       <!-- CLIENTES -->
 
       <div class="opcion">
-
-        <h3>👥 Clientes</h3>
-
+        <span class="opcion-icono">👥</span>
+        <h3>Clientes</h3>
+        <p class="opcion-desc">Consulta los clientes registrados en la plataforma.</p>
         <button class="btn" id="btnVerClientes">
-          Ver clientes registrados
+          Ver clientes
         </button>
-
       </div>
 
     </div>
@@ -183,6 +155,7 @@
 
 </section>
 
+<script src="js/sesion.js"></script>
 <script src="js/admin.js"></script>
 <script src="js/pedidos.js"></script>
 <script src="js/productos.js"></script>

@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
     linkGestion.style.display = (idRol === "5") ? "inline-block" : "none";
   }
 
+  // --- Carrito: oculto para administradores, ya que no compran ---
+  const linkCarrito = document.querySelector(".ver-carrito");
+  if (linkCarrito && idRol === "5") {
+    linkCarrito.style.display = "none";
+  }
+
   // --- Menú desplegable ---
   const boton = document.getElementById("btnUsuario");
   const menu = document.getElementById("menuUsuario");
