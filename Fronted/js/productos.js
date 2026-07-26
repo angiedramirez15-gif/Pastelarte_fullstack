@@ -54,10 +54,31 @@ document.getElementById("fotoProducto").addEventListener("change", (e) => {
     const lector = new FileReader();
 
     lector.onload = () => {
-        fotoBase64Actual = lector.result;
-        const preview = document.getElementById("previewFoto");
-        preview.src = fotoBase64Actual;
-        preview.style.display = "block";
+
+        // Reducimos el tamaño de la imagen antes de guardarla, para que no pese
+        // demasiado para la base de datos (máximo 800px de ancho, calidad 75%).
+        const imagenOriginal = new Image();
+
+        imagenOriginal.onload = () => {
+
+            const anchoMaximo = 800;
+            const escala = Math.min(1, anchoMaximo / imagenOriginal.width);
+
+            const canvas = document.createElement("canvas");
+            canvas.width = imagenOriginal.width * escala;
+            canvas.height = imagenOriginal.height * escala;
+
+            const contexto = canvas.getContext("2d");
+            contexto.drawImage(imagenOriginal, 0, 0, canvas.width, canvas.height);
+
+            fotoBase64Actual = canvas.toDataURL("image/jpeg", 0.75);
+
+            const preview = document.getElementById("previewFoto");
+            preview.src = fotoBase64Actual;
+            preview.style.display = "block";
+        };
+
+        imagenOriginal.src = lector.result;
     };
 
     lector.readAsDataURL(archivo);
@@ -251,19 +272,26 @@ guardarProducto.addEventListener("click", async () => {
     // Si eligió una foto nueva se usa esa; si está editando y no cambió la foto, se conserva la que ya tenía
     const imagen = fotoBase64Actual || imagenActualEditando || null;
 
+    if (!nombre || !precio || !categoria) {
+        alert("Completa nombre, precio y categoría antes de guardar. El producto no aparecerá en el catálogo si le falta la categoría.");
+        return;
+    }
+
     const nuevoProducto = {
         nombre,
         descripcion,
-        precio,
+        precio: Number(precio),
         categoria,
         imagen
     };
 
     try {
 
+        let respuesta;
+
         if (idEditando) {
 
-            await fetch(`${API_URL}/${idEditando}`, {
+            respuesta = await fetch(`${API_URL}/${idEditando}`, {
 
                 method: "PUT",
 
@@ -274,13 +302,17 @@ guardarProducto.addEventListener("click", async () => {
                 body: JSON.stringify(nuevoProducto)
             });
 
+            if (!respuesta.ok) {
+                throw new Error(`El servidor respondió ${respuesta.status}`);
+            }
+
             alert("Producto actualizado correctamente");
 
             idEditando = null;
 
         } else {
 
-            await fetch(API_URL, {
+            respuesta = await fetch(API_URL, {
 
                 method: "POST",
 
@@ -290,6 +322,10 @@ guardarProducto.addEventListener("click", async () => {
 
                 body: JSON.stringify(nuevoProducto)
             });
+
+            if (!respuesta.ok) {
+                throw new Error(`El servidor respondió ${respuesta.status}`);
+            }
 
             alert("Producto agregado correctamente");
         }
@@ -304,5 +340,7 @@ guardarProducto.addEventListener("click", async () => {
             "Error al guardar producto:",
             error
         );
+
+        alert("No se pudo guardar el producto: " + error.message);
     }
 });
