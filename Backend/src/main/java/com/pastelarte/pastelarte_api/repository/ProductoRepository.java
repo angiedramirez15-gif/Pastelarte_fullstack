@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
+    List<Producto> findByCategoria(String categoria);
+
 }

@@ -51,59 +51,8 @@
     <h1>Adicionales</h1>
     <p>Elige tu favorito y haz tu pedido en línea 💕</p>
 
-    <div class="productos">
-      <div class="card">
-        <img src="imagen/Adicionales/EMPACADO-ARQUIPE.jpg" alt="Tres Leches Arequipe">
-        <h3>Tres Leches Arequipe</h3>
-        <p>Bizcochuelo húmedo con mezcla de leches y suave toque de arequipe.</p>
-        <span class="precio">$45.000</span>
-        <button class="btn-carrito"
-          onclick="agregarAlCarrito('Tres Leches Arequipe', 45000, 'imagen/Adicionales/EMPACADO-ARQUIPE.jpg')">Agregar
-          al carrito</button>
-      </div>
-
-      <div class="card">
-        <img src="imagen/Adicionales/EMPACADO-CHOCOLATE.jpg" alt="Tres Leches Chocolate">
-        <h3>Tres Leches Chocolate</h3>
-        <p>Pastel esponjoso bañado en leches con cacao intenso.</p>
-        <span class="precio">$40.000</span>
-        <button class="btn-carrito"
-          onclick="agregarAlCarrito('Tres Leches Chocolate', 40000, 'imagen/Adicionales/EMPACADO-CHOCOLATE.jpg')">Agregar
-          al
-          carrito</button>
-      </div>
-
-      <div class="card">
-        <img src="imagen/Adicionales/EMPACADO-TRADICIONAL.jpg" alt="Tres Leches tradicional">
-        <h3>Tres Leches Tradicional</h3>
-        <p>Clásica textura húmeda con sabor equilibrado y cremoso.</p>
-        <span class="precio">$25.000</span>
-        <button class="btn-carrito"
-          onclick="agregarAlCarrito('Tres Leches Tradicional', 25000,'imagen/Adicionales/EMPACADO-TRADICIONAL.jpg')">Agregar
-          al
-          carrito</button>
-      </div>
-
-      <div class="card">
-        <img src="imagen/Adicionales/EMPACADO-TROPICAL-DEL-FRUTAS.jpg" alt="Tropical de frutas">
-        <h3>Tropical de frutas</h3>
-        <p>Bizcocho suave con mezcla fresca de frutas naturales.</p>
-        <span class="precio">$25.000</span>
-        <button class="btn-carrito"
-          onclick="agregarAlCarrito('Tropical de Frutas', 25000,'imagen/Adicionales/EMPACADO-TROPICAL-DEL-FRUTAS.jpg')">Agregar
-          al
-          carrito</button>
-      </div>
-
-      <div class="card">
-        <img src="imagen/Adicionales/Napoleon.jpg" alt="Napoleon">
-        <h3>Napoleon</h3>
-        <p>Hojaldre crujiente con crema suave y dulzor delicado.</p>
-        <span class="precio">$25.000</span>
-        <button class="btn-carrito"
-          onclick="agregarAlCarrito('Napoleon', 25000,'imagen/Adicionales/Napoleon.jpg')">Agregar al
-          carrito</button>
-      </div>
+    <div class="productos" id="contenedor-productos">
+      <p>Cargando productos...</p>
     </div>
     <a href="catalogo.html" class="btn-volver">Volver catalogo</a>
   </section>
@@ -112,11 +61,11 @@
   </footer>
 
  <script src="js/carrito.js"></script>
+  <script src="js/catalogo-dinamico.js"></script>
+  <script>
+    cargarCatalogo("adicionales", "contenedor-productos");
+  </script>
   <script src="js/sesion.js"></script>
-</body>
-
-</html>
-
 </body>
 
 </html>

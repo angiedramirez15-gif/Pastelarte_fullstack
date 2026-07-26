@@ -145,6 +145,21 @@
 
       <input type="number" id="precioProducto" placeholder="Precio">
 
+      <select id="categoriaProducto">
+        <option value="">Selecciona una categoría</option>
+        <option value="pastel">Pasteles</option>
+        <option value="postres">Postres</option>
+        <option value="ceroazucar">Cero azúcar</option>
+        <option value="adicionales">Adicionales</option>
+      </select>
+
+      <label class="admin-label-foto">
+        Foto del producto
+        <input type="file" id="fotoProducto" accept="image/*">
+      </label>
+
+      <img id="previewFoto" src="" alt="" style="display:none; max-width:120px; border-radius:8px; margin-top:8px;">
+
       <button id="guardarProducto" class="btn">
         Guardar producto
       </button>

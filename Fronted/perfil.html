@@ -23,6 +23,7 @@
       <a href="personalizar.html">Personalizar</a>
       <a href="sobre.html">Sobre Nosotros</a>
       <a href="contacto.html">Contacto</a>
+      <a href="admin.html" id="linkGestion" style="display:none;">⚙️ Gestión</a>
       <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
       <div class="user-menu" id="userMenu" style="display:none;">
         <button id="btnUsuario">
@@ -101,8 +102,6 @@
 
     </div>
 
-    <a class="btn-ver-mas">Ver todos los pedidos</a>
-
   </div>
 
 </section>
@@ -127,18 +126,6 @@
 
   }
 
-  const nombre=localStorage.getItem("nombre");
-
-  if(nombre){
-
-      document.querySelector(".btn-login").style.display="none";
-
-      document.getElementById("userMenu").style.display="block";
-
-      document.getElementById("nombreUsuario").textContent=nombre;
-
-  }
-
   fetch(`http://localhost:8080/clientes/${clienteId}`)
   .then(res=>res.json())
   .then(data=>{
@@ -155,28 +142,50 @@
 
   });
 
+  const ESTADOS_PEDIDO = {
+    pendiente_efectivo: "Pendiente de pago (efectivo)",
+    pendiente_revision: "Pago en revisión",
+    pagado: "Pagado",
+    en_preparacion: "En preparación",
+    en_ruta: "En ruta",
+    entregado: "Entregado",
+    cancelado: "Cancelado"
+  };
+
   fetch(`http://localhost:8080/pedidos/cliente/${clienteId}`)
   .then(res=>res.json())
-  .then(data=>{
+  .then(async data=>{
 
       const contenedor=document.getElementById("pedidos");
 
       contenedor.innerHTML="";
 
-      data.forEach(p=>{
+      for (const p of data) {
+
+          const detalles = await fetch(`http://localhost:8080/detalle-pedidos/pedido/${p.idPedido}`)
+              .then(r => r.json())
+              .catch(() => []);
+
+          const productosHtml = detalles.length === 0
+              ? "<p class=\"pedido-productos\"><small>Sin productos registrados</small></p>"
+              : `<ul class="pedido-productos">
+                  ${detalles.map(d => `<li>${d.cantidad} × ${d.nombreProducto}</li>`).join("")}
+                 </ul>`;
 
           contenedor.innerHTML+=`
           <div class="pedido-item">
               <p><strong>Pedido #${p.idPedido}</strong></p>
+              <p>Estado: <span class="estado ${p.estado}">${ESTADOS_PEDIDO[p.estado] || p.estado}</span></p>
+              ${productosHtml}
               <p>Total: $${p.total}</p>
           </div>
           `;
 
-      });
+      }
 
   });
 
-}
+  }
   function editarPerfil() {
 
 const clienteId = localStorage.getItem("clienteId");
@@ -214,79 +223,9 @@ fetch(`http://localhost:8080/clientes/${clienteId}`)
   })
   .catch(err => console.error("❌ Error:", err));
 }
-
-  // 🔹 CUANDO CARGA LA PÁGINA
-  window.onload = function () {
-
-    const clienteId = localStorage.getItem("clienteId");
-
-    if (!clienteId) {
-      alert("Debes iniciar sesión");
-      window.location.href = "login.html";
-      return;
-    }
-    const boton = document.getElementById("btnUsuario");
-const menu = document.getElementById("menuUsuario");
-
-boton.addEventListener("click", function () {
-  menu.classList.toggle("mostrar");
-});
-const salir = document.getElementById("cerrarSesion");
-
-salir.addEventListener("click", function (e) {
-
-  e.preventDefault(); // Evita que el enlace recargue la página
-
-  localStorage.removeItem("clienteId");
-  localStorage.removeItem("nombre");
-
-  window.location.href = "login.html";
-
-});
-
-    // 🔹 CARGAR PERFIL
-    fetch(`http://localhost:8080/clientes/${clienteId}`)
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("nombrePerfil").innerText = data.nombre;
-        document.getElementById("correoUsuario").innerText = data.correo;
-        document.getElementById("direccionUsuario").innerText = data.direccion;
-
-        localStorage.setItem("nombre", data.nombre);
-      });
-// 🔹 CONTROL DEL MENÚ DE USUARIO
-const nombre = localStorage.getItem("nombre");
-
-if (nombre) {
-  document.querySelector(".btn-login").style.display = "none";
-
-  document.getElementById("userMenu").style.display = "flex";
-
-  document.getElementById("nombreUsuario").textContent = nombre;
-}
-
-    // 🔹 CARGAR PEDIDOS
-    fetch(`http://localhost:8080/pedidos/cliente/${clienteId}`)
-      .then(res => res.json())
-      .then(data => {
-
-        const contenedor = document.getElementById("pedidos");
-        contenedor.innerHTML = "";
-
-        data.forEach(p => {
-          contenedor.innerHTML += `
-            <div>
-              <p>Pedido #${p.idPedido}</p>
-              <p>Total: ${p.total}</p>
-            </div>
-          `;
-        });
-
-      });
-
-  };
-
 </script>
+
+<script src="js/sesion.js"></script>
 </body>
 
 

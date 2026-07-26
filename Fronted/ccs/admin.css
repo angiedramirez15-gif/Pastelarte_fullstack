@@ -314,6 +314,28 @@
   border-radius: 8px;
 }
 
+#formularioProducto select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+}
+
+.admin-label-foto {
+  display: block;
+  text-align: left;
+  font-size: 0.9em;
+  color: var(--admin-text-muted);
+  margin-bottom: 12px;
+}
+
+.admin-label-foto input[type="file"] {
+  display: block;
+  margin-top: 6px;
+}
+
 .btn-editar {
   background-color: var(--admin-accent);
   color: white;
@@ -395,7 +417,36 @@
   font-weight: bold;
 }
 
+.estado-en_preparacion,
+.estado-en_ruta {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.estado-entregado {
+  color: #1a7a4c;
+  font-weight: bold;
+}
+
 .estado-cancelado {
   color: #c0392b;
   font-weight: bold;
+}
+
+.select-estado {
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+
+.fila-productos td {
+  background-color: var(--admin-bg);
+  text-align: left;
+}
+
+.lista-productos-pedido {
+  margin: 8px 0;
+  padding-left: 20px;
 }

@@ -89,16 +89,34 @@
     border-left: 4px solid #d44557;
 }
 
+.pedido-productos {
+    margin: 8px 0;
+    padding-left: 20px;
+    color: #6b4a52;
+    font-size: 0.9em;
+}
+
 .estado {
     font-weight: bold;
 }
 
-.estado.completado {
+.estado.pagado,
+.estado.entregado {
     color: #2e8b57;
 }
 
-.estado.pendiente {
+.estado.pendiente_efectivo,
+.estado.pendiente_revision {
     color: #c27c2c;
+}
+
+.estado.en_preparacion,
+.estado.en_ruta {
+    color: #2563eb;
+}
+
+.estado.cancelado {
+    color: #c0392b;
 }
 
 /* VER MÁS */

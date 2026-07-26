@@ -11,6 +11,7 @@ public class DetallePedidoResponseDTO {
     private Integer idDetalle;
     private Integer idPedido;
     private Integer idProducto;
+    private String nombreProducto;
     private Integer idPersonalizacion;
     private Integer cantidad;
     private Float subtotal;

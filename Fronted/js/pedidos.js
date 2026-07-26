@@ -1,6 +1,20 @@
 const API_PEDIDOS =
     "http://localhost:8080/pedidos";
 
+const API_DETALLES =
+    "http://localhost:8080/detalle-pedidos";
+
+// Estados válidos del ciclo de vida de un pedido, con su etiqueta para mostrar
+const ESTADOS_PEDIDO = {
+    pendiente_efectivo: "Pendiente de pago (efectivo)",
+    pendiente_revision: "Pago en revisión (Nequi)",
+    pagado: "Pagado",
+    en_preparacion: "En preparación",
+    en_ruta: "En ruta",
+    entregado: "Entregado",
+    cancelado: "Cancelado"
+};
+
 // EVENTO
 
 btnVerPedidos.addEventListener(
@@ -61,9 +75,15 @@ async function cargarPedidos() {
                 `;
             }
 
-            const botonConfirmar = pedido.estado === "pagado"
-                ? ""
-                : `<button onclick="confirmarPago(${pedido.idPedido})" class="btn-editar">Confirmar pago</button>`;
+            const opcionesEstado = Object.keys(ESTADOS_PEDIDO).map((valor) =>
+                `<option value="${valor}" ${pedido.estado === valor ? "selected" : ""}>${ESTADOS_PEDIDO[valor]}</option>`
+            ).join("");
+
+            const ESTADOS_PENDIENTES_DE_PAGO = ["pendiente_efectivo", "pendiente_revision"];
+
+            const botonConfirmar = ESTADOS_PENDIENTES_DE_PAGO.includes(pedido.estado)
+                ? `<button onclick="confirmarPago(${pedido.idPedido})" class="btn-editar">Confirmar pago</button>`
+                : "";
 
             html += `
                 <tr>
@@ -74,7 +94,12 @@ async function cargarPedidos() {
 
                     <td>${pedido.fecha}</td>
 
-                    <td><span class="estado-${pedido.estado}">${pedido.estado}</span></td>
+                    <td>
+                        <span class="estado-${pedido.estado}">●</span>
+                        <select onchange="actualizarEstado(${pedido.idPedido}, this.value)" class="select-estado">
+                            ${opcionesEstado}
+                        </select>
+                    </td>
 
                     <td>$${pedido.total}</td>
 
@@ -87,10 +112,10 @@ async function cargarPedidos() {
                         ${botonConfirmar}
 
                         <button
-                            onclick="cambiarEstado(${pedido.idPedido})"
+                            onclick="verProductos(${pedido.idPedido})"
                             class="btn-editar"
                         >
-                            Cambiar estado
+                            Ver productos
                         </button>
 
                         <button
@@ -102,6 +127,9 @@ async function cargarPedidos() {
 
                     </td>
 
+                </tr>
+                <tr id="productos-${pedido.idPedido}" class="fila-productos" style="display:none;">
+                    <td colspan="8"></td>
                 </tr>
             `;
         });
@@ -174,15 +202,9 @@ async function confirmarPago(id) {
     }
 }
 
-// CAMBIAR ESTADO
+// ACTUALIZAR ESTADO (desde el menú desplegable de cada fila)
 
-async function cambiarEstado(id) {
-
-    const nuevoEstado = prompt(
-        "Nuevo estado: pendiente, pagado o cancelado"
-    );
-
-    if (!nuevoEstado) return;
+async function actualizarEstado(id, nuevoEstado) {
 
     try {
 
@@ -205,8 +227,6 @@ async function cambiarEstado(id) {
             body: JSON.stringify(pedido)
         });
 
-        alert("Estado actualizado");
-
         cargarPedidos();
 
     } catch (error) {
@@ -215,5 +235,42 @@ async function cambiarEstado(id) {
             "Error actualizando pedido:",
             error
         );
+    }
+}
+
+// VER PRODUCTOS DEL PEDIDO
+
+async function verProductos(idPedido) {
+
+    const fila = document.getElementById(`productos-${idPedido}`);
+
+    if (!fila) return;
+
+    // Si ya está abierta, la cerramos
+    if (fila.style.display === "table-row") {
+        fila.style.display = "none";
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch(`${API_DETALLES}/pedido/${idPedido}`);
+        const detalles = await respuesta.json();
+
+        const contenido = detalles.length === 0
+            ? "<p>Este pedido no tiene productos registrados.</p>"
+            : `
+                <ul class="lista-productos-pedido">
+                    ${detalles.map((d) => `
+                        <li>${d.cantidad} × ${d.nombreProducto} — $${d.subtotal}</li>
+                    `).join("")}
+                </ul>
+            `;
+
+        fila.querySelector("td").innerHTML = contenido;
+        fila.style.display = "table-row";
+
+    } catch (error) {
+        console.error("Error al cargar los productos del pedido:", error);
     }
 }

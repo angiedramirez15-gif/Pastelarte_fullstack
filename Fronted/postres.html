@@ -24,6 +24,7 @@
       <a href="personalizar.html">Personalizar</a>
       <a href="sobre.html">Sobre Nosotros</a>
       <a href="contacto.html">Contacto</a>
+      <a href="admin.html" id="linkGestion" style="display:none;">⚙️ Gestión</a>
       <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
       <div class="user-menu" id="userMenu" style="display:none;">
         <button id="btnUsuario">
@@ -50,66 +51,8 @@
   <h1>Nuestros Postres</h1>
   <p>Elige tu favorito y haz tu pedido en línea 💕</p>
 
-  <div class="productos">
-    <div class="card">
-      <img src="imagen/Postres/PIONONO.jpg" alt="Piono">
-      <h3>Piono</h3>
-      <p>Delicado pionono relleno con crema y sabor equilibrado.</p>
-      <span class="precio">$45.000</span>
-      <button class="btn-carrito" onclick="agregarAlCarrito(13, 'Piono', 45000, 'imagen/Postres/PIONONO.jpg')">Agregar al
-        carrito</button>
-    </div>
-
-    <div class="card">
-      <img src="imagen/Postres/3-LECHES-GENOVESA.jpg" alt="Genovesa">
-      <h3>Leches Genovesa</h3>
-      <p>Genovesa clásica, esponjosa, con capas de crema.</p>
-      <span class="precio">$40.000</span>
-      <button class="btn-carrito"
-              onclick="agregarAlCarrito(14, 'Leches Genovesa', 40000, 'imagen/Postres/3-LECHES-GENOVESA.jpg')">Agregar al
-        carrito</button>
-    </div>
-
-    <div class="card">
-      <img src="imagen/Postres/MANJAR-ESAPANOL.jpg" alt="Manjar Español">
-      <h3>Manjar Español</h3>
-      <p>Manjar preparado con receta tradicional y cobertura suave.</p>
-      <span class="precio">$25.000</span>
-      <button class="btn-carrito"
-              onclick="agregarAlCarrito(15, 'Manjar Español', 25000,'imagen/Postres/MANJAR-ESAPANOL.jpg')">Agregar al
-        carrito</button>
-    </div>
-
-    <div class="card">
-      <img src="imagen/Postres/NAPOLEON.jpg" alt="Napoleon">
-      <h3>Napoleon</h3>
-      <p>Napoleón crocante con crema pastelera fina.</p>
-      <span class="precio">$25.000</span>
-      <button class="btn-carrito" onclick="agregarAlCarrito(16, 'Napoleon', 25000,'imagen/Postres/NAPOLEON.jpg')">Agregar
-        al
-        carrito</button>
-    </div>
-
-    <div class="card">
-      <img src="imagen/Postres/SELVA-NEGRA_.jpg" alt="Selva Negra">
-      <h3>Selva Negra</h3>
-      <p>Selva Negra con trozos de cereza y chocolate rallado.</p>
-      <span class="precio">$25.000</span>
-      <button class="btn-carrito"
-              onclick="agregarAlCarrito(17, 'Selva Negra', 25000,'imagen/Postres/SELVA-NEGRA_.jpg')">Agregar al
-        carrito</button>
-    </div>
-
-    <div class="card">
-      <img src="imagen/Postres/TRUFAS.jpg" alt="Trufas">
-      <h3>Trufa de Chocolate</h3>
-      <p>Trufa intensa con ganache y detalles dorados.</p>
-      <span class="precio">$25.000</span>
-      <button class="btn-carrito"
-              onclick="agregarAlCarrito(18, 'Trufa de Chocolate', 25000,'imagen/Postres/TRUFAS.jpg')">Agregar al
-        carrito</button>
-    </div>
-
+  <div class="productos" id="contenedor-productos">
+    <p>Cargando productos...</p>
   </div>
   <a href="catalogo.html" class="btn-volver">Volver catalogo</a>
 </section>
@@ -117,6 +60,10 @@
   <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
 </footer>
 <script src="js/carrito.js"></script>
+<script src="js/catalogo-dinamico.js"></script>
+<script>
+  cargarCatalogo("postres", "contenedor-productos");
+</script>
 <script src="js/sesion.js"></script>
 </body>
 

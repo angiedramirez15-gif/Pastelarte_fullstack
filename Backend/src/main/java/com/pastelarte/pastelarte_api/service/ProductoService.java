@@ -43,6 +43,7 @@ public class ProductoService {
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
         producto.setCategoria(dto.getCategoria());
+        producto.setImagen(dto.getImagen());
 
         return convertirAResponse(repository.save(producto));
     }
@@ -59,8 +60,16 @@ public class ProductoService {
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
         producto.setCategoria(dto.getCategoria());
+        producto.setImagen(dto.getImagen());
 
         return convertirAResponse(repository.save(producto));
+    }
+
+    public List<ProductoResponseDTO> listarPorCategoria(String categoria) {
+        return repository.findByCategoria(categoria)
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
     }
 
     public void eliminar(Integer id) {
@@ -76,6 +85,7 @@ public class ProductoService {
         dto.setDescripcion(producto.getDescripcion());
         dto.setPrecio(producto.getPrecio());
         dto.setCategoria(producto.getCategoria());
+        dto.setImagen(producto.getImagen());
 
         return dto;
     }

@@ -3,7 +3,9 @@ package com.pastelarte.pastelarte_api.service;
 import com.pastelarte.pastelarte_api.dto.DetallePedidoRequestDTO;
 import com.pastelarte.pastelarte_api.dto.DetallePedidoResponseDTO;
 import com.pastelarte.pastelarte_api.entities.DetallePedido;
+import com.pastelarte.pastelarte_api.entities.Producto;
 import com.pastelarte.pastelarte_api.repository.DetallePedidoRepository;
+import com.pastelarte.pastelarte_api.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +15,18 @@ import java.util.stream.Collectors;
 public class DetallePedidoService {
 
     private final DetallePedidoRepository repository;
+    private final ProductoRepository productoRepository;
 
-    public DetallePedidoService(DetallePedidoRepository repository) {
+    public DetallePedidoService(DetallePedidoRepository repository, ProductoRepository productoRepository) {
         this.repository = repository;
+        this.productoRepository = productoRepository;
+    }
+
+    public List<DetallePedidoResponseDTO> listarPorPedido(Integer idPedido) {
+        return repository.findByIdPedido(idPedido)
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
     }
 
     public List<DetallePedidoResponseDTO> listar() {
@@ -76,6 +87,12 @@ public class DetallePedidoService {
         dto.setIdDetalle(detalle.getIdDetalle());
         dto.setIdPedido(detalle.getIdPedido());
         dto.setIdProducto(detalle.getIdProducto());
+
+        if (detalle.getIdProducto() != null) {
+            Producto producto = productoRepository.findById(detalle.getIdProducto()).orElse(null);
+            dto.setNombreProducto(producto != null ? producto.getNombre() : "Producto eliminado");
+        }
+
         dto.setIdPersonalizacion(detalle.getIdPersonalizacion());
         dto.setCantidad(detalle.getCantidad());
         dto.setSubtotal(detalle.getSubtotal());

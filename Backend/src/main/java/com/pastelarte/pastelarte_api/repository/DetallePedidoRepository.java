@@ -8,4 +8,6 @@ import java.util.List;
 public interface DetallePedidoRepository extends JpaRepository<DetallePedido, Integer> {
 
     List<DetallePedido> findByIdPedidoIn(List<Integer> idsPedido);
+
+    List<DetallePedido> findByIdPedido(Integer idPedido);
 }
