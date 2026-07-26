@@ -32,6 +32,14 @@ const listaClientes =
 const btnVerClientes =
     document.getElementById("btnVerClientes");
 
+// MENSAJES DE CONTACTO
+
+const listaMensajes =
+    document.getElementById("listaMensajes");
+
+const btnVerMensajes =
+    document.getElementById("btnVerMensajes");
+
 // VARIABLE GLOBAL EDITAR
 
 let idEditando = null;

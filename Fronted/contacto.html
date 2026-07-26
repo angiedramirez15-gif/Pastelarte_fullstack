@@ -135,15 +135,35 @@
 
   
   <script>
-    document.getElementById("formContacto").addEventListener("submit", function (e) {
+    document.getElementById("formContacto").addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      document.getElementById("confirmacion").style.display = "block";
+      const nuevoMensaje = {
+        nombre: document.getElementById("nombre").value,
+        correo: document.getElementById("correo").value,
+        telefono: document.getElementById("telefono").value,
+        mensaje: document.getElementById("mensaje").value
+      };
 
-      
-      this.reset();
+      try {
 
-      
+        const respuesta = await fetch("http://localhost:8080/mensajes-contacto", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevoMensaje)
+        });
+
+        if (!respuesta.ok) {
+          throw new Error(`El servidor respondió ${respuesta.status}`);
+        }
+
+        document.getElementById("confirmacion").style.display = "block";
+        this.reset();
+
+      } catch (error) {
+        console.error("Error al enviar el mensaje:", error);
+        alert("No se pudo enviar tu mensaje. Intenta de nuevo en un momento.");
+      }
     });
   </script>
   <script src="js/sesion.js"></script>
