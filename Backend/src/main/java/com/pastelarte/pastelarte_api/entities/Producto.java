@@ -19,7 +19,19 @@ public class Producto {
 
     private String categoria;
 
+    @Lob
+    @Column(name = "imagen", columnDefinition = "LONGTEXT")
+    private String imagen;
+
     public Producto() {}
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
     public Integer getIdProducto() {
         return idProducto;

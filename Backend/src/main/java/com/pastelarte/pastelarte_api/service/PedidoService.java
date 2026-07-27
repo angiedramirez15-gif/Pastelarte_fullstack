@@ -2,7 +2,9 @@ package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.PedidoRequestDTO;
 import com.pastelarte.pastelarte_api.dto.PedidoResponseDTO;
+import com.pastelarte.pastelarte_api.entities.Cliente;
 import com.pastelarte.pastelarte_api.entities.Pedido;
+import com.pastelarte.pastelarte_api.repository.ClienteRepository;
 import com.pastelarte.pastelarte_api.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.util.stream.Collectors;
 public class PedidoService {
 
     private final PedidoRepository repository;
+    private final ClienteRepository clienteRepository;
 
-    public PedidoService(PedidoRepository repository) {
+    public PedidoService(PedidoRepository repository, ClienteRepository clienteRepository) {
         this.repository = repository;
+        this.clienteRepository = clienteRepository;
     }
 
     public List<PedidoResponseDTO> listar() {
@@ -44,6 +48,8 @@ public class PedidoService {
         pedido.setEstado(dto.getEstado());
         pedido.setTotal(dto.getTotal());
         pedido.setIdPago(dto.getIdPago());
+        pedido.setComprobante(dto.getComprobante());
+        pedido.setNumeroNequi(dto.getNumeroNequi());
 
         return convertirAResponse(repository.save(pedido));
     }
@@ -61,6 +67,21 @@ public class PedidoService {
         pedido.setEstado(dto.getEstado());
         pedido.setTotal(dto.getTotal());
         pedido.setIdPago(dto.getIdPago());
+        pedido.setComprobante(dto.getComprobante());
+        pedido.setNumeroNequi(dto.getNumeroNequi());
+
+        return convertirAResponse(repository.save(pedido));
+    }
+
+    public PedidoResponseDTO confirmarPago(Integer id) {
+
+        Pedido pedido = repository.findById(id).orElse(null);
+
+        if (pedido == null) {
+            return null;
+        }
+
+        pedido.setEstado("pagado");
 
         return convertirAResponse(repository.save(pedido));
     }
@@ -80,10 +101,18 @@ public class PedidoService {
 
         dto.setIdPedido(pedido.getIdPedido());
         dto.setIdCliente(pedido.getIdCliente());
+
+        if (pedido.getIdCliente() != null) {
+            Cliente cliente = clienteRepository.findById(pedido.getIdCliente()).orElse(null);
+            dto.setNombreCliente(cliente != null ? cliente.getNombre() : "Cliente eliminado");
+        }
+
         dto.setFecha(pedido.getFecha());
         dto.setEstado(pedido.getEstado());
         dto.setTotal(pedido.getTotal());
         dto.setIdPago(pedido.getIdPago());
+        dto.setComprobante(pedido.getComprobante());
+        dto.setNumeroNequi(pedido.getNumeroNequi());
 
         return dto;
     }

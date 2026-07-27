@@ -23,7 +23,7 @@
         <a href="personalizar.html">Personalizar</a>
         <a href="sobre.html">Sobre Nosotros</a>
         <a href="contacto.html">Contacto</a>
-        <a href="admin.html">Administrador</a>
+        <a href="admin.html" id="linkGestion" style="display:none;">⚙️ Gestión</a>
         <a href="carrito.html" class="ver-carrito">🛒 Carrito</a>
         <div class="user-menu" id="userMenu" style="display:none;">
           <button id="btnUsuario">
@@ -91,57 +91,7 @@
   </footer>
 
   <script src="js/carrito.js"></script>
-  <script>
-    window.onload = function () {
-
-     const nombre = localStorage.getItem("nombre");
-
-     if(nombre){
-
-         document.querySelector(".btn-login").style.display="none";
-
-         document.getElementById("userMenu").style.display="block";
-
-         document.getElementById("nombreUsuario").textContent=nombre;
-
-     }
-
- }
-    const boton=document.getElementById("btnUsuario");
-const menu=document.getElementById("menuUsuario");
-
-if(boton){
-
-boton.addEventListener("click",function(){
-
-menu.classList.toggle("mostrar");
-
-});
-
-window.addEventListener("click",function(e){
-
-if(!boton.contains(e.target) && !menu.contains(e.target)){
-menu.classList.remove("mostrar");
-}
-
-});
-
-}
-
-const salir=document.getElementById("cerrarSesion");
-
-if(salir){
-
-salir.addEventListener("click",function(){
-
-localStorage.clear();
-
-window.location.href="login.html";
-
-});
-
-}
-  </script>
+  <script src="js/sesion.js"></script>
 </body>
 
 </html>

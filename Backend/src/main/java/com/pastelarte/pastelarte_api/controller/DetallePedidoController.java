@@ -28,6 +28,11 @@ public class DetallePedidoController {
         return service.buscar(id);
     }
 
+    @GetMapping("/pedido/{idPedido}")
+    public List<DetallePedidoResponseDTO> listarPorPedido(@PathVariable Integer idPedido) {
+        return service.listarPorPedido(idPedido);
+    }
+
     @PostMapping
     public DetallePedidoResponseDTO guardar(@RequestBody DetallePedidoRequestDTO dto) {
         return service.guardar(dto);

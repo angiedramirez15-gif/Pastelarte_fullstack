@@ -12,4 +12,5 @@ public class ProductoRequestDTO {
     private String descripcion;
     private Float precio;
     private String categoria;
+    private String imagen;
 }

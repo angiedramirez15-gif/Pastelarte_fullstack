@@ -11,8 +11,11 @@ public class PedidoResponseDTO {
 
     private Integer idPedido;
     private Integer idCliente;
+    private String nombreCliente;
     private LocalDate fecha;
     private String estado;
     private Double total;
     private Integer idPago;
+    private String comprobante;
+    private String numeroNequi;
 }

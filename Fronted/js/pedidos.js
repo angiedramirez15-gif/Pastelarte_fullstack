@@ -1,6 +1,20 @@
 const API_PEDIDOS =
     "http://localhost:8080/pedidos";
 
+const API_DETALLES =
+    "http://localhost:8080/detalle-pedidos";
+
+// Estados válidos del ciclo de vida de un pedido, con su etiqueta para mostrar
+const ESTADOS_PEDIDO = {
+    pendiente_efectivo: "Pendiente de pago (efectivo)",
+    pendiente_revision: "Pago en revisión (Nequi)",
+    pagado: "Pagado",
+    en_preparacion: "En preparación",
+    en_ruta: "En ruta",
+    entregado: "Entregado",
+    cancelado: "Cancelado"
+};
+
 // EVENTO
 
 btnVerPedidos.addEventListener(
@@ -37,7 +51,8 @@ async function cargarPedidos() {
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th>Total</th>
-                        <th>Pago</th>
+                        <th>Método de pago</th>
+                        <th>Comprobante</th>
                         <th>Acciones</th>
                     </tr>
 
@@ -48,28 +63,59 @@ async function cargarPedidos() {
 
         pedidos.forEach((pedido) => {
 
+            const metodoPago = pedido.idPago === 1 ? "Nequi 💜" : "Efectivo 💵";
+
+            let comprobanteHtml = "—";
+            if (pedido.comprobante) {
+                comprobanteHtml = `
+                    <a href="${pedido.comprobante}" target="_blank">
+                        <img src="${pedido.comprobante}" alt="Comprobante" style="max-width:60px; border-radius:6px;">
+                    </a>
+                    ${pedido.numeroNequi ? `<br><small>Nº: ${pedido.numeroNequi}</small>` : ""}
+                `;
+            }
+
+            const opcionesEstado = Object.keys(ESTADOS_PEDIDO).map((valor) =>
+                `<option value="${valor}" ${pedido.estado === valor ? "selected" : ""}>${ESTADOS_PEDIDO[valor]}</option>`
+            ).join("");
+
+            const ESTADOS_PENDIENTES_DE_PAGO = ["pendiente_efectivo", "pendiente_revision"];
+
+            const botonConfirmar = ESTADOS_PENDIENTES_DE_PAGO.includes(pedido.estado)
+                ? `<button onclick="confirmarPago(${pedido.idPedido})" class="btn-editar">Confirmar pago</button>`
+                : "";
+
             html += `
                 <tr>
 
                     <td>${pedido.idPedido}</td>
 
-                    <td>${pedido.idCliente}</td>
+                    <td>${pedido.nombreCliente || "—"} <small>(ID: ${pedido.idCliente})</small></td>
 
                     <td>${pedido.fecha}</td>
 
-                    <td>${pedido.estado}</td>
+                    <td>
+                        <span class="estado-${pedido.estado}">●</span>
+                        <select onchange="actualizarEstado(${pedido.idPedido}, this.value)" class="select-estado">
+                            ${opcionesEstado}
+                        </select>
+                    </td>
 
                     <td>$${pedido.total}</td>
 
-                    <td>${pedido.idPago}</td>
+                    <td>${metodoPago}</td>
+
+                    <td>${comprobanteHtml}</td>
 
                     <td>
 
+                        ${botonConfirmar}
+
                         <button
-                            onclick="cambiarEstado(${pedido.idPedido})"
+                            onclick="verProductos(${pedido.idPedido})"
                             class="btn-editar"
                         >
-                            Cambiar estado
+                            Ver productos
                         </button>
 
                         <button
@@ -81,6 +127,9 @@ async function cargarPedidos() {
 
                     </td>
 
+                </tr>
+                <tr id="productos-${pedido.idPedido}" class="fila-productos" style="display:none;">
+                    <td colspan="8"></td>
                 </tr>
             `;
         });
@@ -130,15 +179,32 @@ async function eliminarPedido(id) {
     }
 }
 
-// CAMBIAR ESTADO
+// CONFIRMAR PAGO (revisas el comprobante en tu celular y lo apruebas)
 
-async function cambiarEstado(id) {
+async function confirmarPago(id) {
 
-    const nuevoEstado = prompt(
-        "Nuevo estado: pendiente, pagado o cancelado"
-    );
+    const confirmar = confirm("¿Confirmar que el pago de este pedido es válido?");
 
-    if (!nuevoEstado) return;
+    if (!confirmar) return;
+
+    try {
+
+        await fetch(`${API_PEDIDOS}/${id}/confirmar-pago`, {
+            method: "PUT"
+        });
+
+        alert("✅ Pago confirmado. El pedido ahora está marcado como 'pagado'.");
+
+        cargarPedidos();
+
+    } catch (error) {
+        console.error("Error confirmando el pago:", error);
+    }
+}
+
+// ACTUALIZAR ESTADO (desde el menú desplegable de cada fila)
+
+async function actualizarEstado(id, nuevoEstado) {
 
     try {
 
@@ -161,8 +227,6 @@ async function cambiarEstado(id) {
             body: JSON.stringify(pedido)
         });
 
-        alert("Estado actualizado");
-
         cargarPedidos();
 
     } catch (error) {
@@ -171,5 +235,42 @@ async function cambiarEstado(id) {
             "Error actualizando pedido:",
             error
         );
+    }
+}
+
+// VER PRODUCTOS DEL PEDIDO
+
+async function verProductos(idPedido) {
+
+    const fila = document.getElementById(`productos-${idPedido}`);
+
+    if (!fila) return;
+
+    // Si ya está abierta, la cerramos
+    if (fila.style.display === "table-row") {
+        fila.style.display = "none";
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch(`${API_DETALLES}/pedido/${idPedido}`);
+        const detalles = await respuesta.json();
+
+        const contenido = detalles.length === 0
+            ? "<p>Este pedido no tiene productos registrados.</p>"
+            : `
+                <ul class="lista-productos-pedido">
+                    ${detalles.map((d) => `
+                        <li>${d.cantidad} × ${d.nombreProducto} — $${d.subtotal}</li>
+                    `).join("")}
+                </ul>
+            `;
+
+        fila.querySelector("td").innerHTML = contenido;
+        fila.style.display = "table-row";
+
+    } catch (error) {
+        console.error("Error al cargar los productos del pedido:", error);
     }
 }

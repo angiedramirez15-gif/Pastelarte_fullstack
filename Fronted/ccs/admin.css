@@ -1,3 +1,85 @@
+/* ============================================
+   PANEL DE GESTIÓN — tokens de diseño
+   Paleta distinta a la tienda: neutra + acento
+   vino oscuro, para que se sienta como una
+   herramienta interna y no como la tienda.
+============================================ */
+:root {
+  --admin-bg: #F4F5F7;
+  --admin-surface: #FFFFFF;
+  --admin-text: #1E2230;
+  --admin-text-muted: #6B7280;
+  --admin-border: #E3E5EA;
+  --admin-accent: #6B2C43;
+  --admin-accent-dark: #552034;
+  --admin-accent-soft: #F3E7EC;
+}
+
+.admin, .admin-topbar, #panelAdmin, #accesoDenegado {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Barra superior --- */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  padding: 14px 30px;
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--admin-text);
+}
+
+.admin-brand-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.admin-brand-text {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.admin-brand-tag {
+  color: var(--admin-accent);
+  font-weight: 600;
+}
+
+.admin-topbar-right #btnUsuario {
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  color: var(--admin-text);
+  font-size: 0.95em;
+}
+
+.admin-header {
+  text-align: left;
+  max-width: 1100px;
+  margin: 0 auto 10px;
+}
+
+.admin-header h1 {
+  font-size: 1.6em;
+  color: var(--admin-text);
+  margin-bottom: 4px;
+}
+
+.admin-header p {
+  color: var(--admin-text-muted);
+  margin: 0;
+}
+
 #loginAdmin {
   text-align: center;
   margin-top: 30px;
@@ -5,7 +87,7 @@
 
 #loginAdmin input {
   padding: 10px;
-  border: 1px solid #e6a4b4;
+  border: 1px solid var(--admin-border);
   border-radius: 8px;
   font-size: 1em;
   width: 250px;
@@ -13,7 +95,7 @@
 }
 
 .btn.entrar {
-  background-color: #D81B60;
+  background-color: var(--admin-accent);
   color: white;
   border: none;
   padding: 12px 25px;
@@ -27,16 +109,42 @@
 }
 
 .btn.entrar:hover {
-  background-color: #c2185b;
+  background-color: var(--admin-accent-dark);
 }
 
 .opcion {
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   padding: 25px;
-  width: 320px;
-  text-align: center;
+  width: 300px;
+  text-align: left;
+}
+
+.opcion-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--admin-accent-soft);
+  font-size: 1.3em;
+  margin-bottom: 12px;
+}
+
+.opcion h3 {
+  color: var(--admin-text);
+  margin: 0 0 6px 0;
+  font-size: 1.1em;
+}
+
+.opcion-desc {
+  color: var(--admin-text-muted);
+  font-size: 0.9em;
+  margin: 0 0 16px 0;
+  line-height: 1.4;
 }
 
 .panel-opciones {
@@ -44,22 +152,36 @@
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 24px;
   margin-top: 30px;
 }
 
 
 .opcion .btn {
-  background-color: #D81B60;
+  background-color: var(--admin-accent);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
-  width: 90%;
-  margin: 10px auto 0;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  margin: 8px 0 0;
+}
+
+.opcion .btn:hover {
+  background-color: var(--admin-accent-dark);
+}
+
+.opcion .btn-secundario {
+  background-color: transparent;
+  color: var(--admin-accent);
+  border: 1px solid var(--admin-accent);
+}
+
+.opcion .btn-secundario:hover {
+  background-color: var(--admin-accent-soft);
 }
 
 
@@ -82,24 +204,25 @@
 
 .admin {
   text-align: center;
-  padding: 60px 20px;
-  background-color: #fcefee;
+  padding: 30px 20px 60px;
+  background-color: var(--admin-bg);
+  min-height: 80vh;
 }
 
 .admin table {
   width: 90%;
   margin: 30px auto;
   border-collapse: collapse;
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--admin-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border-radius: 10px;
   overflow: hidden;
 }
 
 .admin th {
-  background-color: #fcd4e0;
+  background-color: var(--admin-accent-soft);
   padding: 15px;
-  color: #5a3e36;
+  color: var(--admin-text);
 }
 
 
@@ -110,7 +233,7 @@
 }
 
 .card button {
-  background-color: #D81B60;
+  background-color: var(--admin-accent);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -121,34 +244,36 @@
 }
 
 .card button:hover {
-  background-color: #c2185b;
+  background-color: var(--admin-accent-dark);
 }
 
 .tabla-productos {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
-  background: white;
+  background: var(--admin-surface);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .tabla-productos th {
-  background-color: #ff69b4;
+  background-color: var(--admin-accent);
   color: white;
   padding: 12px;
   text-align: center;
+  font-weight: 500;
 }
 
 .tabla-productos td {
   padding: 12px;
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--admin-border);
+  color: var(--admin-text);
 }
 
 .tabla-productos tr:hover {
-  background-color: #ffe4ec;
+  background-color: var(--admin-accent-soft);
 }
 #listaProductos {
   width: 100%;
@@ -177,7 +302,7 @@
 }
 
 #formularioProducto h3 {
-  color: #ff69b4;
+  color: var(--admin-accent);
   margin-bottom: 15px;
 }
 
@@ -189,8 +314,30 @@
   border-radius: 8px;
 }
 
+#formularioProducto select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+}
+
+.admin-label-foto {
+  display: block;
+  text-align: left;
+  font-size: 0.9em;
+  color: var(--admin-text-muted);
+  margin-bottom: 12px;
+}
+
+.admin-label-foto input[type="file"] {
+  display: block;
+  margin-top: 6px;
+}
+
 .btn-editar {
-  background-color: #ff69b4;
+  background-color: var(--admin-accent);
   color: white;
   border: none;
   padding: 8px 12px;
@@ -200,11 +347,11 @@
 }
 
 .btn-editar:hover {
-  background-color: #e754a3;
+  background-color: var(--admin-accent-dark);
 }
 
 #guardarProducto {
-  background-color: #ff69b4;
+  background-color: var(--admin-accent);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -217,6 +364,89 @@
 }
 
 #guardarProducto:hover {
-  background-color: #e754a3;
+  background-color: var(--admin-accent-dark);
   transform: scale(1.02);
+}
+/* === DASHBOARD ADMIN === */
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 10px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashboard-card {
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-left: 4px solid var(--admin-accent);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: left;
+}
+
+.dashboard-card h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--admin-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dashboard-card p {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+/* Etiquetas de estado del pedido */
+
+.estado-pendiente_efectivo,
+.estado-pendiente_revision {
+  color: #b8860b;
+  font-weight: bold;
+}
+
+.estado-pagado {
+  color: #2e8b57;
+  font-weight: bold;
+}
+
+.estado-en_preparacion,
+.estado-en_ruta {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.estado-entregado {
+  color: #1a7a4c;
+  font-weight: bold;
+}
+
+.estado-cancelado {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+.select-estado {
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+
+.fila-productos td {
+  background-color: var(--admin-bg);
+  text-align: left;
+}
+
+.lista-productos-pedido {
+  margin: 8px 0;
+  padding-left: 20px;
 }
