@@ -1,3 +1,4 @@
+// PersonalizacionService.java
 package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.PersonalizacionRequestDTO;
@@ -27,18 +28,11 @@ public class PersonalizacionService {
 
     public PersonalizacionResponseDTO buscar(Integer id) {
         Personalizacion p = repository.findById(id).orElse(null);
-
-        if (p == null) {
-            return null;
-        }
-
-        return convertirAResponse(p);
+        return (p != null) ? convertirAResponse(p) : null;
     }
 
     public PersonalizacionResponseDTO guardar(PersonalizacionRequestDTO dto) {
-
         Personalizacion p = new Personalizacion();
-
         p.setTamano(dto.getTamano());
         p.setSabor(dto.getSabor());
         p.setDecoraciones(dto.getDecoraciones());
@@ -49,12 +43,8 @@ public class PersonalizacionService {
     }
 
     public PersonalizacionResponseDTO actualizar(Integer id, PersonalizacionRequestDTO dto) {
-
         Personalizacion p = repository.findById(id).orElse(null);
-
-        if (p == null) {
-            return null;
-        }
+        if (p == null) return null;
 
         p.setTamano(dto.getTamano());
         p.setSabor(dto.getSabor());
@@ -70,16 +60,13 @@ public class PersonalizacionService {
     }
 
     private PersonalizacionResponseDTO convertirAResponse(Personalizacion p) {
-
         PersonalizacionResponseDTO dto = new PersonalizacionResponseDTO();
-
         dto.setIdPersonalizacion(p.getIdPersonalizacion());
         dto.setTamano(p.getTamano());
         dto.setSabor(p.getSabor());
         dto.setDecoraciones(p.getDecoraciones());
         dto.setDescripcion(p.getDescripcion());
         dto.setCostoExtra(p.getCostoExtra());
-
         return dto;
     }
 }

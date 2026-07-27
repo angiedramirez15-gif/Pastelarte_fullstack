@@ -1,3 +1,4 @@
+// ClienteResponseDTO.java
 package com.pastelarte.pastelarte_api.dto;
 
 import lombok.*;

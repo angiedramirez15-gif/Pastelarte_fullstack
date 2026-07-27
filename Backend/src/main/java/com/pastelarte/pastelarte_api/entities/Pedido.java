@@ -1,6 +1,8 @@
+// Pedido.java
 package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -12,14 +14,16 @@ public class Pedido {
     @Column(name = "id_pedido")
     private Integer idPedido;
 
-    @Column(name = "id_cliente")
-    private Integer idCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente cliente;
 
     private LocalDate fecha;
 
     private String estado;
 
-    private Double total;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal total;
 
     @Column(name = "id_pago")
     private Integer idPago;
@@ -41,12 +45,12 @@ public class Pedido {
         this.idPedido = idPedido;
     }
 
-    public Integer getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public LocalDate getFecha() {
@@ -65,11 +69,11 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -78,7 +82,8 @@ public class Pedido {
     }
 
     public void setIdPago(Integer idPago) {
-        this.idPago = idPago;}
+        this.idPago = idPago;
+    }
 
     public String getComprobante() {
         return comprobante;

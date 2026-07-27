@@ -1,6 +1,8 @@
+// Personalizacion.java
 package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "personalizacion")
@@ -19,8 +21,8 @@ public class Personalizacion {
 
     private String descripcion;
 
-    @Column(name = "costo_extra")
-    private Float costoExtra;
+    @Column(name = "costo_extra", precision = 10, scale = 2)
+    private BigDecimal costoExtra;
 
     public Personalizacion() {}
 
@@ -64,11 +66,11 @@ public class Personalizacion {
         this.descripcion = descripcion;
     }
 
-    public Float getCostoExtra() {
+    public BigDecimal getCostoExtra() {
         return costoExtra;
     }
 
-    public void setCostoExtra(Float costoExtra) {
+    public void setCostoExtra(BigDecimal costoExtra) {
         this.costoExtra = costoExtra;
     }
 }

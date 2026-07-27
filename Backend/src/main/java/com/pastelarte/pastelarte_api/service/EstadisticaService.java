@@ -44,19 +44,22 @@ public class EstadisticaService {
                 .map(Pedido::getIdPedido)
                 .toList();
 
+        // LLAMADA CORREGIDA: findByPedido_IdPedidoIn
         List<DetallePedido> detallesDelMes = idsPedidosDelMes.isEmpty()
                 ? List.of()
-                : detalleRepository.findByIdPedidoIn(idsPedidosDelMes);
+                : detalleRepository.findByPedido_IdPedidoIn(idsPedidosDelMes);
 
         // --- Sumar cantidades por producto ---
         Map<Integer, Integer> cantidadPorProducto = new HashMap<>();
 
         for (DetallePedido detalle : detallesDelMes) {
-            cantidadPorProducto.merge(
-                    detalle.getIdProducto(),
-                    detalle.getCantidad() == null ? 0 : detalle.getCantidad(),
-                    Integer::sum
-            );
+            // VERIFICACIÓN DE SEGURIDAD Y ACCESO CORREGIDO: detalle.getProducto()
+            if (detalle.getProducto() != null && detalle.getProducto().getIdProducto() != null) {
+                Integer idProd = detalle.getProducto().getIdProducto();
+                int cantidad = detalle.getCantidad() == null ? 0 : detalle.getCantidad();
+
+                cantidadPorProducto.merge(idProd, cantidad, Integer::sum);
+            }
         }
 
         Map<String, Object> productoTop = new HashMap<>();

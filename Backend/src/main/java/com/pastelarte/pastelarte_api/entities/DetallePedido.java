@@ -1,6 +1,8 @@
+// DetallePedido.java
 package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "detalle_pedido")
@@ -11,18 +13,22 @@ public class DetallePedido {
     @Column(name = "id_detalle")
     private Integer idDetalle;
 
-    @Column(name = "id_pedido")
-    private Integer idPedido;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pedido", nullable = false)
+    private Pedido pedido;
 
-    @Column(name = "id_producto")
-    private Integer idProducto;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto", nullable = false)
+    private Producto producto;
 
-    @Column(name = "id_personalizacion")
-    private Integer idPersonalizacion;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_personalizacion", nullable = true)
+    private Personalizacion personalizacion;
 
     private Integer cantidad;
 
-    private Float subtotal;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal subtotal;
 
     public DetallePedido() {}
 
@@ -34,28 +40,28 @@ public class DetallePedido {
         this.idDetalle = idDetalle;
     }
 
-    public Integer getIdPedido() {
-        return idPedido;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
-    public Integer getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public Integer getIdPersonalizacion() {
-        return idPersonalizacion;
+    public Personalizacion getPersonalizacion() {
+        return personalizacion;
     }
 
-    public void setIdPersonalizacion(Integer idPersonalizacion) {
-        this.idPersonalizacion = idPersonalizacion;
+    public void setPersonalizacion(Personalizacion personalizacion) {
+        this.personalizacion = personalizacion;
     }
 
     public Integer getCantidad() {
@@ -66,11 +72,11 @@ public class DetallePedido {
         this.cantidad = cantidad;
     }
 
-    public Float getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Float subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 }

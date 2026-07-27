@@ -1,3 +1,4 @@
+// DetallePedidoRequestDTO.java
 package com.pastelarte.pastelarte_api.dto;
 
 import lombok.*;
@@ -10,7 +11,6 @@ public class DetallePedidoRequestDTO {
 
     private Integer idPedido;
     private Integer idProducto;
-    private Integer idPersonalizacion;
+    private Integer idPersonalizacion; // Puede ser null
     private Integer cantidad;
-    private Float subtotal;
 }

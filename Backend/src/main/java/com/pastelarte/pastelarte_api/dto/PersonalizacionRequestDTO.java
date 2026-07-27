@@ -1,6 +1,8 @@
+// PersonalizacionRequestDTO.java
 package com.pastelarte.pastelarte_api.dto;
 
 import lombok.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -12,5 +14,5 @@ public class PersonalizacionRequestDTO {
     private String sabor;
     private String decoraciones;
     private String descripcion;
-    private Float costoExtra;
+    private BigDecimal costoExtra;
 }

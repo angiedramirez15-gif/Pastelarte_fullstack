@@ -1,6 +1,8 @@
+// Producto.java
 package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "producto")
@@ -15,7 +17,8 @@ public class Producto {
 
     private String descripcion;
 
-    private Float precio;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal precio;
 
     private String categoria;
 
@@ -24,14 +27,6 @@ public class Producto {
     private String imagen;
 
     public Producto() {}
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
 
     public Integer getIdProducto() {
         return idProducto;
@@ -57,11 +52,11 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public Float getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Float precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 
@@ -70,5 +65,14 @@ public class Producto {
     }
 
     public void setCategoria(String categoria) {
-        this.categoria = categoria;}
+        this.categoria = categoria;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 }

@@ -1,3 +1,4 @@
+// PedidoService.java
 package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.PedidoRequestDTO;
@@ -8,6 +9,7 @@ import com.pastelarte.pastelarte_api.repository.ClienteRepository;
 import com.pastelarte.pastelarte_api.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,22 +33,19 @@ public class PedidoService {
 
     public PedidoResponseDTO buscar(Integer id) {
         Pedido pedido = repository.findById(id).orElse(null);
-
-        if (pedido == null) {
-            return null;
-        }
-
-        return convertirAResponse(pedido);
+        return (pedido != null) ? convertirAResponse(pedido) : null;
     }
 
     public PedidoResponseDTO guardar(PedidoRequestDTO dto) {
-
         Pedido pedido = new Pedido();
 
-        pedido.setIdCliente(dto.getIdCliente());
+        Cliente cliente = clienteRepository.findById(dto.getIdCliente())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + dto.getIdCliente()));
+
+        pedido.setCliente(cliente);
         pedido.setFecha(dto.getFecha());
         pedido.setEstado(dto.getEstado());
-        pedido.setTotal(dto.getTotal());
+        pedido.setTotal(dto.getTotal() != null ? dto.getTotal() : BigDecimal.ZERO);
         pedido.setIdPago(dto.getIdPago());
         pedido.setComprobante(dto.getComprobante());
         pedido.setNumeroNequi(dto.getNumeroNequi());
@@ -55,14 +54,13 @@ public class PedidoService {
     }
 
     public PedidoResponseDTO actualizar(Integer id, PedidoRequestDTO dto) {
-
         Pedido pedido = repository.findById(id).orElse(null);
+        if (pedido == null) return null;
 
-        if (pedido == null) {
-            return null;
-        }
+        Cliente cliente = clienteRepository.findById(dto.getIdCliente())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + dto.getIdCliente()));
 
-        pedido.setIdCliente(dto.getIdCliente());
+        pedido.setCliente(cliente);
         pedido.setFecha(dto.getFecha());
         pedido.setEstado(dto.getEstado());
         pedido.setTotal(dto.getTotal());
@@ -74,37 +72,33 @@ public class PedidoService {
     }
 
     public PedidoResponseDTO confirmarPago(Integer id) {
-
         Pedido pedido = repository.findById(id).orElse(null);
-
-        if (pedido == null) {
-            return null;
-        }
+        if (pedido == null) return null;
 
         pedido.setEstado("pagado");
-
         return convertirAResponse(repository.save(pedido));
     }
+
     public List<PedidoResponseDTO> listarPorCliente(Integer idCliente) {
-        return repository.findByIdCliente(idCliente)
+        return repository.findByCliente_IdCliente(idCliente)
                 .stream()
                 .map(this::convertirAResponse)
-                .toList();
+                .collect(Collectors.toList());
     }
+
     public void eliminar(Integer id) {
         repository.deleteById(id);
     }
 
     private PedidoResponseDTO convertirAResponse(Pedido pedido) {
-
         PedidoResponseDTO dto = new PedidoResponseDTO();
-
         dto.setIdPedido(pedido.getIdPedido());
-        dto.setIdCliente(pedido.getIdCliente());
 
-        if (pedido.getIdCliente() != null) {
-            Cliente cliente = clienteRepository.findById(pedido.getIdCliente()).orElse(null);
-            dto.setNombreCliente(cliente != null ? cliente.getNombre() : "Cliente eliminado");
+        if (pedido.getCliente() != null) {
+            dto.setIdCliente(pedido.getCliente().getIdCliente());
+            dto.setNombreCliente(pedido.getCliente().getNombre());
+        } else {
+            dto.setNombreCliente("Cliente eliminado");
         }
 
         dto.setFecha(pedido.getFecha());

@@ -1,3 +1,4 @@
+// Cliente.java
 package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
@@ -56,6 +57,7 @@ public class Cliente {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
+
     public String getDireccion() {
         return direccion;
     }

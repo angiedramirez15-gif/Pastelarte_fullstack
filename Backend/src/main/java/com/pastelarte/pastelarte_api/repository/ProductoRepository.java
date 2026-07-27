@@ -1,3 +1,4 @@
+// ProductoRepository.java
 package com.pastelarte.pastelarte_api.repository;
 
 import com.pastelarte.pastelarte_api.entities.Producto;
@@ -7,5 +8,4 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     List<Producto> findByCategoria(String categoria);
-
 }

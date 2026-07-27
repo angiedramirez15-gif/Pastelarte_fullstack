@@ -1,6 +1,8 @@
+// DetallePedidoResponseDTO.java
 package com.pastelarte.pastelarte_api.dto;
 
 import lombok.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -14,5 +16,5 @@ public class DetallePedidoResponseDTO {
     private String nombreProducto;
     private Integer idPersonalizacion;
     private Integer cantidad;
-    private Float subtotal;
+    private BigDecimal subtotal;
 }

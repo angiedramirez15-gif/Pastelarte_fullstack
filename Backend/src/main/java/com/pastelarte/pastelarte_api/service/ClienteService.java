@@ -1,3 +1,4 @@
+// ClienteService.java
 package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.ClienteRequestDTO;
@@ -27,18 +28,11 @@ public class ClienteService {
 
     public ClienteResponseDTO buscar(Integer id) {
         Cliente cliente = repository.findById(id).orElse(null);
-
-        if (cliente == null) {
-            return null;
-        }
-
-        return convertirAResponse(cliente);
+        return (cliente != null) ? convertirAResponse(cliente) : null;
     }
 
     public ClienteResponseDTO guardar(ClienteRequestDTO dto) {
-
         Cliente cliente = new Cliente();
-
         cliente.setNombre(dto.getNombre());
         cliente.setCorreo(dto.getCorreo());
         cliente.setContrasena(dto.getContrasena());
@@ -49,12 +43,8 @@ public class ClienteService {
     }
 
     public ClienteResponseDTO actualizar(Integer id, ClienteRequestDTO dto) {
-
         Cliente cliente = repository.findById(id).orElse(null);
-
-        if (cliente == null) {
-            return null;
-        }
+        if (cliente == null) return null;
 
         cliente.setNombre(dto.getNombre());
         cliente.setCorreo(dto.getCorreo());
@@ -70,16 +60,13 @@ public class ClienteService {
     }
 
     private ClienteResponseDTO convertirAResponse(Cliente cliente) {
-
         ClienteResponseDTO dto = new ClienteResponseDTO();
-
         dto.setIdCliente(cliente.getIdCliente());
         dto.setNombre(cliente.getNombre());
         dto.setCorreo(cliente.getCorreo());
         dto.setContrasena(cliente.getContrasena());
         dto.setDireccion(cliente.getDireccion());
         dto.setIdRol(cliente.getIdRol());
-
         return dto;
     }
 }

@@ -1,10 +1,7 @@
-const API_PEDIDOS =
-    "http://localhost:8080/pedidos";
+const API_PEDIDOS = "http://localhost:8080/pedidos";
+const API_DETALLES = "http://localhost:8080/detalle-pedidos";
 
-const API_DETALLES =
-    "http://localhost:8080/detalle-pedidos";
-
-// Estados válidos del ciclo de vida de un pedido, con su etiqueta para mostrar
+// Estados válidos del ciclo de vida de un pedido
 const ESTADOS_PEDIDO = {
     pendiente_efectivo: "Pendiente de pago (efectivo)",
     pendiente_revision: "Pago en revisión (Nequi)",
@@ -16,35 +13,21 @@ const ESTADOS_PEDIDO = {
 };
 
 // EVENTO
-
-btnVerPedidos.addEventListener(
-    "click",
-    cargarPedidos
-);
+btnVerPedidos.addEventListener("click", cargarPedidos);
 
 // CARGAR PEDIDOS
-
 async function cargarPedidos() {
-
     try {
-
         listaProductos.style.display = "none";
-
         formularioProducto.style.display = "none";
-
         listaPedidos.style.display = "block";
 
-        const respuesta =
-            await fetch(API_PEDIDOS);
-
-        const pedidos =
-            await respuesta.json();
+        const respuesta = await fetch(API_PEDIDOS);
+        const pedidos = await respuesta.json();
 
         let html = `
             <table class="tabla-productos">
-
                 <thead>
-
                     <tr>
                         <th>ID</th>
                         <th>Cliente</th>
@@ -55,14 +38,11 @@ async function cargarPedidos() {
                         <th>Comprobante</th>
                         <th>Acciones</th>
                     </tr>
-
                 </thead>
-
                 <tbody>
         `;
 
         pedidos.forEach((pedido) => {
-
             const metodoPago = pedido.idPago === 1 ? "Nequi 💜" : "Efectivo 💵";
 
             let comprobanteHtml = "—";
@@ -87,46 +67,24 @@ async function cargarPedidos() {
 
             html += `
                 <tr>
-
                     <td>${pedido.idPedido}</td>
-
                     <td>${pedido.nombreCliente || "—"} <small>(ID: ${pedido.idCliente})</small></td>
-
                     <td>${pedido.fecha}</td>
-
                     <td>
                         <span class="estado-${pedido.estado}">●</span>
                         <select onchange="actualizarEstado(${pedido.idPedido}, this.value)" class="select-estado">
                             ${opcionesEstado}
                         </select>
                     </td>
-
                     <td>$${pedido.total}</td>
-
                     <td>${metodoPago}</td>
-
                     <td>${comprobanteHtml}</td>
-
                     <td>
-
                         ${botonConfirmar}
-
-                        <button
-                            onclick="verProductos(${pedido.idPedido})"
-                            class="btn-editar"
-                        >
+                        <button onclick="verProductos(${pedido.idPedido})" class="btn-editar">
                             Ver productos
                         </button>
-
-                        <button
-                            onclick="eliminarPedido(${pedido.idPedido})"
-                            class="btn-eliminar"
-                        >
-                            Eliminar
-                        </button>
-
                     </td>
-
                 </tr>
                 <tr id="productos-${pedido.idPedido}" class="fila-productos" style="display:none;">
                     <td colspan="8"></td>
@@ -136,65 +94,27 @@ async function cargarPedidos() {
 
         html += `
                 </tbody>
-
             </table>
         `;
 
         listaPedidos.innerHTML = html;
 
     } catch (error) {
-
-        console.error(
-            "Error al cargar pedidos:",
-            error
-        );
+        console.error("Error al cargar pedidos:", error);
     }
 }
 
-// ELIMINAR PEDIDO
-
-async function eliminarPedido(id) {
-
-    const confirmar =
-        confirm("¿Eliminar pedido?");
-
-    if (!confirmar) return;
-
-    try {
-
-        await fetch(`${API_PEDIDOS}/${id}`, {
-            method: "DELETE"
-        });
-
-        alert("Pedido eliminado");
-
-        cargarPedidos();
-
-    } catch (error) {
-
-        console.error(
-            "Error eliminando pedido:",
-            error
-        );
-    }
-}
-
-// CONFIRMAR PAGO (revisas el comprobante en tu celular y lo apruebas)
-
+// CONFIRMAR PAGO (aprobación manual del comprobante)
 async function confirmarPago(id) {
-
     const confirmar = confirm("¿Confirmar que el pago de este pedido es válido?");
-
     if (!confirmar) return;
 
     try {
-
         await fetch(`${API_PEDIDOS}/${id}/confirmar-pago`, {
             method: "PUT"
         });
 
         alert("✅ Pago confirmado. El pedido ahora está marcado como 'pagado'.");
-
         cargarPedidos();
 
     } catch (error) {
@@ -202,58 +122,40 @@ async function confirmarPago(id) {
     }
 }
 
-// ACTUALIZAR ESTADO (desde el menú desplegable de cada fila)
-
+// ACTUALIZAR ESTADO (cambia el estado desde el selector desplegable)
 async function actualizarEstado(id, nuevoEstado) {
-
     try {
-
-        const respuesta =
-            await fetch(`${API_PEDIDOS}/${id}`);
-
-        const pedido =
-            await respuesta.json();
+        const respuesta = await fetch(`${API_PEDIDOS}/${id}`);
+        const pedido = await respuesta.json();
 
         pedido.estado = nuevoEstado;
 
         await fetch(`${API_PEDIDOS}/${id}`, {
-
             method: "PUT",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify(pedido)
         });
 
         cargarPedidos();
 
     } catch (error) {
-
-        console.error(
-            "Error actualizando pedido:",
-            error
-        );
+        console.error("Error actualizando pedido:", error);
     }
 }
 
 // VER PRODUCTOS DEL PEDIDO
-
 async function verProductos(idPedido) {
-
     const fila = document.getElementById(`productos-${idPedido}`);
-
     if (!fila) return;
 
-    // Si ya está abierta, la cerramos
     if (fila.style.display === "table-row") {
         fila.style.display = "none";
         return;
     }
 
     try {
-
         const respuesta = await fetch(`${API_DETALLES}/pedido/${idPedido}`);
         const detalles = await respuesta.json();
 

@@ -1,3 +1,4 @@
+// ProductoService.java
 package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.ProductoRequestDTO;
@@ -27,18 +28,11 @@ public class ProductoService {
 
     public ProductoResponseDTO buscar(Integer id) {
         Producto producto = repository.findById(id).orElse(null);
-
-        if (producto == null) {
-            return null;
-        }
-
-        return convertirAResponse(producto);
+        return (producto != null) ? convertirAResponse(producto) : null;
     }
 
     public ProductoResponseDTO guardar(ProductoRequestDTO dto) {
-
         Producto producto = new Producto();
-
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
@@ -49,12 +43,8 @@ public class ProductoService {
     }
 
     public ProductoResponseDTO actualizar(Integer id, ProductoRequestDTO dto) {
-
         Producto producto = repository.findById(id).orElse(null);
-
-        if (producto == null) {
-            return null;
-        }
+        if (producto == null) return null;
 
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
@@ -77,16 +67,13 @@ public class ProductoService {
     }
 
     private ProductoResponseDTO convertirAResponse(Producto producto) {
-
         ProductoResponseDTO dto = new ProductoResponseDTO();
-
         dto.setIdProducto(producto.getIdProducto());
         dto.setNombre(producto.getNombre());
         dto.setDescripcion(producto.getDescripcion());
         dto.setPrecio(producto.getPrecio());
         dto.setCategoria(producto.getCategoria());
         dto.setImagen(producto.getImagen());
-
         return dto;
     }
 }
