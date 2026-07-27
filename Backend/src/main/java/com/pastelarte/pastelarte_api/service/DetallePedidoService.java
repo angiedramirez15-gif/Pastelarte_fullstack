@@ -1,4 +1,3 @@
-// DetallePedidoService.java
 package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.DetallePedidoRequestDTO;
@@ -12,8 +11,8 @@ import com.pastelarte.pastelarte_api.repository.PedidoRepository;
 import com.pastelarte.pastelarte_api.repository.PersonalizacionRepository;
 import com.pastelarte.pastelarte_api.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +34,7 @@ public class DetallePedidoService {
         this.personalizacionRepository = personalizacionRepository;
     }
 
-    public List<DetallePedidoResponseDTO> listarPorPedido(Integer idPedido) {
-        return repository.findByPedido_IdPedido(idPedido)
-                .stream()
-                .map(this::convertirAResponse)
-                .collect(Collectors.toList());
-    }
-
+    @Transactional(readOnly = true)
     public List<DetallePedidoResponseDTO> listar() {
         return repository.findAll()
                 .stream()
@@ -49,111 +42,104 @@ public class DetallePedidoService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public DetallePedidoResponseDTO buscar(Integer id) {
-        DetallePedido detalle = repository.findById(id).orElse(null);
-        return (detalle != null) ? convertirAResponse(detalle) : null;
+        DetallePedido detalle = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El detalle de pedido con ID " + id + " no fue encontrado."));
+
+        return convertirAResponse(detalle);
     }
 
+    @Transactional(readOnly = true)
+    public List<DetallePedidoResponseDTO> listarPorPedido(Integer idPedido) {
+        return repository.findByPedido_IdPedido(idPedido)
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public DetallePedidoResponseDTO guardar(DetallePedidoRequestDTO dto) {
-        DetallePedido detalle = new DetallePedido();
 
-        // Mapeo de Pedido
         Pedido pedido = pedidoRepository.findById(dto.getIdPedido())
-                .orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + dto.getIdPedido()));
+                .orElseThrow(() -> new RuntimeException("No se puede crear el detalle. El pedido con ID " + dto.getIdPedido() + " no existe."));
+
+        Producto producto = productoRepository.findById(dto.getIdProducto())
+                .orElseThrow(() -> new RuntimeException("No se puede crear el detalle. El producto con ID " + dto.getIdProducto() + " no existe."));
+
+        Personalizacion personalizacion = null;
+        if (dto.getIdPersonalizacion() != null) {
+            personalizacion = personalizacionRepository.findById(dto.getIdPersonalizacion())
+                    .orElseThrow(() -> new RuntimeException("La personalización con ID " + dto.getIdPersonalizacion() + " no existe."));
+        }
+
+        DetallePedido detalle = new DetallePedido();
         detalle.setPedido(pedido);
-
-        // Mapeo de Producto
-        Producto producto = productoRepository.findById(dto.getIdProducto())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + dto.getIdProducto()));
         detalle.setProducto(producto);
-
-        // Mapeo de Personalización (Opcional)
-        Personalizacion personalizacion = null;
-        BigDecimal costoExtra = BigDecimal.ZERO;
-        if (dto.getIdPersonalizacion() != null) {
-            personalizacion = personalizacionRepository.findById(dto.getIdPersonalizacion()).orElse(null);
-            if (personalizacion != null && personalizacion.getCostoExtra() != null) {
-                costoExtra = personalizacion.getCostoExtra();
-            }
-        }
         detalle.setPersonalizacion(personalizacion);
-
-        // CÁLCULO SEGURO DEL SUBTOTAL EN EL BACKEND
-        // Subtotal = (Precio Producto + Costo Extra Personalización) * Cantidad
-        BigDecimal precioBase = producto.getPrecio() != null ? producto.getPrecio() : BigDecimal.ZERO;
-        BigDecimal precioUnitarioTotal = precioBase.add(costoExtra);
-        BigDecimal subtotalCalculado = precioUnitarioTotal.multiply(BigDecimal.valueOf(dto.getCantidad()));
-
         detalle.setCantidad(dto.getCantidad());
-        detalle.setSubtotal(subtotalCalculado);
+        detalle.setSubtotal(dto.getSubtotal());
 
-        DetallePedido guardado = repository.save(detalle);
-
-        // Opcional: recalcular el total del pedido principal
-        actualizarTotalPedido(pedido);
-
-        return convertirAResponse(guardado);
+        return convertirAResponse(repository.save(detalle));
     }
 
+    @Transactional
     public DetallePedidoResponseDTO actualizar(Integer id, DetallePedidoRequestDTO dto) {
-        DetallePedido detalle = repository.findById(id).orElse(null);
-        if (detalle == null) return null;
+
+        DetallePedido detalle = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El detalle con ID " + id + " no existe."));
+
+        Pedido pedido = pedidoRepository.findById(dto.getIdPedido())
+                .orElseThrow(() -> new RuntimeException("El pedido con ID " + dto.getIdPedido() + " no existe."));
 
         Producto producto = productoRepository.findById(dto.getIdProducto())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        detalle.setProducto(producto);
+                .orElseThrow(() -> new RuntimeException("El producto con ID " + dto.getIdProducto() + " no existe."));
 
         Personalizacion personalizacion = null;
-        BigDecimal costoExtra = BigDecimal.ZERO;
         if (dto.getIdPersonalizacion() != null) {
-            personalizacion = personalizacionRepository.findById(dto.getIdPersonalizacion()).orElse(null);
-            if (personalizacion != null && personalizacion.getCostoExtra() != null) {
-                costoExtra = personalizacion.getCostoExtra();
-            }
+            personalizacion = personalizacionRepository.findById(dto.getIdPersonalizacion())
+                    .orElseThrow(() -> new RuntimeException("La personalización con ID " + dto.getIdPersonalizacion() + " no existe."));
         }
+
+        detalle.setPedido(pedido);
+        detalle.setProducto(producto);
         detalle.setPersonalizacion(personalizacion);
-
-        BigDecimal precioBase = producto.getPrecio() != null ? producto.getPrecio() : BigDecimal.ZERO;
-        BigDecimal precioUnitarioTotal = precioBase.add(costoExtra);
-        BigDecimal subtotalCalculado = precioUnitarioTotal.multiply(BigDecimal.valueOf(dto.getCantidad()));
-
         detalle.setCantidad(dto.getCantidad());
-        detalle.setSubtotal(subtotalCalculado);
+        detalle.setSubtotal(dto.getSubtotal());
 
-        DetallePedido guardado = repository.save(detalle);
-        actualizarTotalPedido(detalle.getPedido());
-
-        return convertirAResponse(guardado);
+        return convertirAResponse(repository.save(detalle));
     }
 
+    @Transactional
     public void eliminar(Integer id) {
-        DetallePedido detalle = repository.findById(id).orElse(null);
-        if (detalle != null) {
-            Pedido pedido = detalle.getPedido();
-            repository.deleteById(id);
-            actualizarTotalPedido(pedido);
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("No se puede eliminar. El detalle con ID " + id + " no existe.");
         }
-    }
-
-    private void actualizarTotalPedido(Pedido pedido) {
-        List<DetallePedido> detalles = repository.findByPedido_IdPedido(pedido.getIdPedido());
-        BigDecimal totalCalculado = detalles.stream()
-                .map(d -> d.getSubtotal() != null ? d.getSubtotal() : BigDecimal.ZERO)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        pedido.setTotal(totalCalculado);
-        pedidoRepository.save(pedido);
+        repository.deleteById(id);
     }
 
     private DetallePedidoResponseDTO convertirAResponse(DetallePedido detalle) {
+
         DetallePedidoResponseDTO dto = new DetallePedidoResponseDTO();
+
         dto.setIdDetalle(detalle.getIdDetalle());
-        dto.setIdPedido(detalle.getPedido() != null ? detalle.getPedido().getIdPedido() : null);
-        dto.setIdProducto(detalle.getProducto() != null ? detalle.getProducto().getIdProducto() : null);
-        dto.setNombreProducto(detalle.getProducto() != null ? detalle.getProducto().getNombre() : "Producto eliminado");
-        dto.setIdPersonalizacion(detalle.getPersonalizacion() != null ? detalle.getPersonalizacion().getIdPersonalizacion() : null);
+
+        if (detalle.getPedido() != null) {
+            dto.setIdPedido(detalle.getPedido().getIdPedido());
+        }
+
+        if (detalle.getProducto() != null) {
+            dto.setIdProducto(detalle.getProducto().getIdProducto());
+            dto.setNombreProducto(detalle.getProducto().getNombre());
+        }
+
+        if (detalle.getPersonalizacion() != null) {
+            dto.setIdPersonalizacion(detalle.getPersonalizacion().getIdPersonalizacion());
+        }
+
         dto.setCantidad(detalle.getCantidad());
         dto.setSubtotal(detalle.getSubtotal());
+
         return dto;
     }
 }
