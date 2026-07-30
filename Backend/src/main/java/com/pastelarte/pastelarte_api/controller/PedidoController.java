@@ -1,59 +1,68 @@
 package com.pastelarte.pastelarte_api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pastelarte.pastelarte_api.dto.PedidoRequestDTO;
 import com.pastelarte.pastelarte_api.dto.PedidoResponseDTO;
 import com.pastelarte.pastelarte_api.service.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class PedidoController {
 
     private final PedidoService service;
+    private final ObjectMapper objectMapper;
 
-    public PedidoController(PedidoService service) {
+    public PedidoController(PedidoService service, ObjectMapper objectMapper) {
         this.service = service;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<PedidoResponseDTO>> listar() {
-        return ResponseEntity.ok(service.listar());
+    public List<PedidoResponseDTO> listar() {
+        return service.listar();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoResponseDTO> buscar(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.buscar(id));
+    public PedidoResponseDTO buscar(@PathVariable Integer id) {
+        return service.buscar(id);
     }
 
     @PostMapping
-    public ResponseEntity<PedidoResponseDTO> guardar(@Valid @RequestBody PedidoRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(dto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public PedidoResponseDTO guardar(@Valid @RequestBody PedidoRequestDTO dto) {
+        return service.guardar(dto);
+    }
+
+    @PostMapping(value = "/con-comprobante", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public PedidoResponseDTO crearConComprobante(
+            @RequestPart("pedido") String pedidoJson,
+            @RequestPart(value = "comprobante", required = false) MultipartFile comprobante) {
+        try {
+            PedidoRequestDTO dto = objectMapper.readValue(pedidoJson, PedidoRequestDTO.class);
+            return service.guardarConArchivo(dto, comprobante);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al procesar la solicitud del pedido: " + e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PedidoResponseDTO> actualizar(@PathVariable Integer id, @Valid @RequestBody PedidoRequestDTO dto) {
-        return ResponseEntity.ok(service.actualizar(id, dto));
-    }
-
-    @PatchMapping("/{id}/confirmar-pago")
-    public ResponseEntity<PedidoResponseDTO> confirmarPago(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.confirmarPago(id));
-    }
-
-    @GetMapping("/cliente/{idCliente}")
-    public ResponseEntity<List<PedidoResponseDTO>> listarPorCliente(@PathVariable Integer idCliente) {
-        return ResponseEntity.ok(service.listarPorCliente(idCliente));
+    public PedidoResponseDTO actualizar(@PathVariable Integer id,
+                                        @Valid @RequestBody PedidoRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable Integer id) {
         service.eliminar(id);
-        return ResponseEntity.noContent().build();
     }
 }

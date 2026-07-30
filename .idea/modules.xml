@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Pastelarte_fullstack.iml" filepath="$PROJECT_DIR$/.idea/Pastelarte_fullstack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/pastelarte-api.iml" filepath="$PROJECT_DIR$/Backend/pastelarte-api.iml" />
     </modules>
   </component>
 </project>

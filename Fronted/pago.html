@@ -31,15 +31,8 @@
         </button>
 
         <div class="dropdown" id="menuUsuario">
-
-          <a href="perfil.html">
-            Mi perfil
-          </a>
-
-          <a href="#" id="cerrarSesion">
-            Cerrar sesión
-          </a>
-
+          <a href="perfil.html">Mi perfil</a>
+          <a href="#" id="cerrarSesion">Cerrar sesión</a>
         </div>
       </div>
       <a href="login.html" class="btn-login">Acceder</a>
@@ -129,21 +122,7 @@
     `;
   });
 
-  const API_PEDIDOS = "http://localhost:8080/pedidos";
-  const API_DETALLES = "http://localhost:8080/detalle-pedidos";
-
-  // Convierte el archivo del comprobante a una cadena base64 para guardarlo en la BD
-  function leerArchivoComoBase64(archivo) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(archivo);
-    });
-  }
-
   async function pagar() {
-
     const clienteId = localStorage.getItem("clienteId");
 
     if (!clienteId) {
@@ -178,71 +157,67 @@
       return;
     }
 
-    let comprobanteBase64 = null;
+    const inputComprobante = document.getElementById("comprobante");
     let numeroNequi = null;
 
     if (nequi) {
-      const archivos = document.getElementById("comprobante").files;
-      if (archivos.length === 0) {
+      if (!inputComprobante.files || inputComprobante.files.length === 0) {
         alert("Debes subir el comprobante de pago por Nequi.");
         return;
       }
       numeroNequi = document.getElementById("numeroNequi").value.trim();
-      comprobanteBase64 = await leerArchivoComoBase64(archivos[0]);
     }
 
     const total = carrito.reduce((suma, item) => suma + item.precio, 0);
-
-    // id_pago en la BD: 1 = nequi, 2 = efectivo (ver Data/pastelarte.sql)
     const idPago = nequi ? 1 : 2;
-
-    // Estado automático según el método de pago
     const estado = nequi ? "pendiente_revision" : "pendiente_efectivo";
 
+    // 1. Armamos la lista de detalles desde el carrito
+    const detallesDTO = carrito.map(item => ({
+      idProducto: item.idProducto,
+      cantidad: 1,
+      subtotal: item.precio
+    }));
+
+    // CORRECCIÓN DE FECHA LOCAL (Evita salto de fecha UTC pasadas las 7:00 PM)
+    const hoy = new Date();
+    const fechaLocal = hoy.getFullYear() + '-' +
+            String(hoy.getMonth() + 1).padStart(2, '0') + '-' +
+            String(hoy.getDate()).padStart(2, '0');
+
+    // 2. Objeto JSON principal del Pedido
     const pedidoDTO = {
       idCliente: Number(clienteId),
-      fecha: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+      fecha: fechaLocal,
       estado: estado,
       total: total,
       idPago: idPago,
-      comprobante: comprobanteBase64,
-      numeroNequi: numeroNequi
+      numeroNequi: numeroNequi,
+      detalles: detallesDTO
     };
 
-    try {
+    // 3. Crear FormData para envío multipart/form-data
+    const formData = new FormData();
+    formData.append("pedido", new Blob([JSON.stringify(pedidoDTO)], { type: "application/json" }));
 
-      // 1. Crear el pedido
-      const respuestaPedido = await fetch(API_PEDIDOS, {
+    if (nequi && inputComprobante.files[0]) {
+      formData.append("comprobante", inputComprobante.files[0]);
+    }
+
+    try {
+      const respuesta = await fetch("http://localhost:8080/pedidos/con-comprobante", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pedidoDTO)
+        body: formData
       });
 
-      if (!respuestaPedido.ok) throw new Error("No se pudo crear el pedido");
-
-      const pedidoCreado = await respuestaPedido.json();
-
-      // 2. Crear un detalle_pedido por cada producto del carrito
-      for (const item of carrito) {
-
-        const detalleDTO = {
-          idPedido: pedidoCreado.idPedido,
-          idProducto: item.idProducto,
-          idPersonalizacion: null,
-          cantidad: 1,
-          subtotal: item.precio
-        };
-
-        await fetch(API_DETALLES, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(detalleDTO)
-        });
+      if (!respuesta.ok) {
+        const errorMsg = await respuesta.text();
+        throw new Error(errorMsg || "Error al procesar el pedido.");
       }
 
       const mensaje = nequi
-        ? "🎉 ¡Pedido registrado! Tu pago por Nequi está en revisión."
-        : "🎉 ¡Pedido registrado! Pagarás en efectivo contra entrega.";
+              ? "🎉 ¡Pedido registrado! Tu pago por Nequi está en revisión."
+              : "🎉 ¡Pedido registrado! Pagarás en efectivo contra entrega.";
 
       alert(mensaje);
 
@@ -251,7 +226,7 @@
 
     } catch (error) {
       console.error("Error al procesar el pedido:", error);
-      alert("Ocurrió un error al registrar tu pedido. Intenta de nuevo.");
+      alert("Ocurrió un error al registrar tu pedido: " + error.message);
     }
   }
 </script>

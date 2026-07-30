@@ -61,31 +61,40 @@ function iniciarSesion() {
   const correo = document.getElementById("usuario").value;
   const clave = document.getElementById("clave").value;
 
-  fetch("http://localhost:8080/clientes")
-    .then(res => res.json())
-    .then(data => {
+  if (!correo || !clave) {
+    alert("⚠️ Completa correo y contraseña");
+    return;
+  }
 
-      const usuario = data.find(u =>
-        u.correo === correo && u.contrasena === clave
-      );
-
-      if (!usuario) {
-        alert("Usuario incorrecto");
-        return;
-      }
-
-      alert("Bienvenido " + usuario.nombre);
+  fetch("http://localhost:8080/clientes/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      correo: correo,
+      contrasena: clave
+    })
+  })
+      .then(res => {
+        if (!res.ok) throw new Error("Credenciales inválidas");
+        return res.json();
+      })
+      .then(usuario => {
+        alert("Bienvenido " + usuario.nombre);
 
         localStorage.setItem("clienteId", usuario.idCliente);
         localStorage.setItem("nombre", usuario.nombre);
         localStorage.setItem("idRol", usuario.idRol);
 
-      if (usuario.idRol === 5) {
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "index.html";
-      }
-
-    })
-    .catch(err => console.error(err));
+        if (usuario.idRol === 5) {
+          window.location.href = "admin.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      })
+      .catch(err => {
+        alert("❌ Usuario o contraseña incorrectos");
+        console.error(err);
+      });
 }

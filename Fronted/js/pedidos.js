@@ -1,5 +1,6 @@
 const API_PEDIDOS = "http://localhost:8080/pedidos";
 const API_DETALLES = "http://localhost:8080/detalle-pedidos";
+const URL_UPLOADS = "http://localhost:8080/uploads/comprobantes/";
 
 // Estados válidos del ciclo de vida de un pedido
 const ESTADOS_PEDIDO = {
@@ -47,9 +48,15 @@ async function cargarPedidos() {
 
             let comprobanteHtml = "—";
             if (pedido.comprobante) {
+                // Si la cadena guardada ya incluye http:// o https:// se usa tal cual,
+                // de lo contrario se concatena el servidor de uploads de Spring Boot
+                const rutaImagen = pedido.comprobante.startsWith("http")
+                    ? pedido.comprobante
+                    : `${URL_UPLOADS}${pedido.comprobante}`;
+
                 comprobanteHtml = `
-                    <a href="${pedido.comprobante}" target="_blank">
-                        <img src="${pedido.comprobante}" alt="Comprobante" style="max-width:60px; border-radius:6px;">
+                    <a href="${rutaImagen}" target="_blank">
+                        <img src="${rutaImagen}" alt="Comprobante" style="max-width:60px; border-radius:6px; cursor:pointer;">
                     </a>
                     ${pedido.numeroNequi ? `<br><small>Nº: ${pedido.numeroNequi}</small>` : ""}
                 `;

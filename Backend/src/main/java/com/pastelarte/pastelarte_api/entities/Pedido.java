@@ -1,4 +1,3 @@
-// Pedido.java
 package com.pastelarte.pastelarte_api.entities;
 
 import jakarta.persistence.*;
@@ -28,8 +27,8 @@ public class Pedido {
     @Column(name = "id_pago")
     private Integer idPago;
 
-    @Lob
-    @Column(name = "comprobante", columnDefinition = "LONGTEXT")
+    // AHORA GUARDA LA RUTA/NOMBRE DE LA IMAGEN (MÁXIMO 255 CARACTERES)
+    @Column(name = "comprobante", length = 255)
     private String comprobante;
 
     @Column(name = "numero_nequi")
