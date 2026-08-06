@@ -176,6 +176,7 @@
           <div class="pedido-item">
               <p><strong>Pedido #${p.idPedido}</strong></p>
               <p>Estado: <span class="estado ${p.estado}">${ESTADOS_PEDIDO[p.estado] || p.estado}</span></p>
+              ${p.estado === "cancelado" && p.motivoCancelacion ? `<p class="motivo-cancelacion">⚠️ ${p.motivoCancelacion}</p>` : ""}
               ${productosHtml}
               <p>Total: $${p.total}</p>
           </div>

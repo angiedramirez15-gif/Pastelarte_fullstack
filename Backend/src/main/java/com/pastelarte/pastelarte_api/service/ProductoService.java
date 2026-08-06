@@ -38,6 +38,7 @@ public class ProductoService {
         producto.setPrecio(dto.getPrecio());
         producto.setCategoria(dto.getCategoria());
         producto.setImagen(dto.getImagen());
+        producto.setPorciones(dto.getPorciones());
 
         return convertirAResponse(repository.save(producto));
     }
@@ -51,6 +52,7 @@ public class ProductoService {
         producto.setPrecio(dto.getPrecio());
         producto.setCategoria(dto.getCategoria());
         producto.setImagen(dto.getImagen());
+        producto.setPorciones(dto.getPorciones());
 
         return convertirAResponse(repository.save(producto));
     }
@@ -74,6 +76,7 @@ public class ProductoService {
         dto.setPrecio(producto.getPrecio());
         dto.setCategoria(producto.getCategoria());
         dto.setImagen(producto.getImagen());
+        dto.setPorciones(producto.getPorciones());
         return dto;
     }
 }

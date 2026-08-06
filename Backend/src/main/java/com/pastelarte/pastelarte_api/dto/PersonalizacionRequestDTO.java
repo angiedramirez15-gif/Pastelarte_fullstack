@@ -15,4 +15,5 @@ public class PersonalizacionRequestDTO {
     private String decoraciones;
     private String descripcion;
     private BigDecimal costoExtra;
+    private String imagen;
 }

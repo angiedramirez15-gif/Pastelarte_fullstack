@@ -69,7 +69,10 @@ async function cargarPedidos() {
             const ESTADOS_PENDIENTES_DE_PAGO = ["pendiente_efectivo", "pendiente_revision"];
 
             const botonConfirmar = ESTADOS_PENDIENTES_DE_PAGO.includes(pedido.estado)
-                ? `<button onclick="confirmarPago(${pedido.idPedido})" class="btn-editar">Confirmar pago</button>`
+                ? `
+                    <button onclick="confirmarPago(${pedido.idPedido})" class="btn-editar">Confirmar pago</button>
+                    <button onclick="rechazarPago(${pedido.idPedido})" class="btn-eliminar">Rechazar</button>
+                  `
                 : "";
 
             html += `
@@ -78,7 +81,7 @@ async function cargarPedidos() {
                     <td>${pedido.nombreCliente || "—"} <small>(ID: ${pedido.idCliente})</small></td>
                     <td>${pedido.fecha}</td>
                     <td>
-                        <span class="estado-${pedido.estado}">●</span>
+                        <span class="estado-${pedido.estado}" ${pedido.motivoCancelacion ? `title="${pedido.motivoCancelacion}"` : ""}>●</span>
                         <select onchange="actualizarEstado(${pedido.idPedido}, this.value)" class="select-estado">
                             ${opcionesEstado}
                         </select>
@@ -117,15 +120,39 @@ async function confirmarPago(id) {
     if (!confirmar) return;
 
     try {
-        await fetch(`${API_PEDIDOS}/${id}/confirmar-pago`, {
+        const respuesta = await fetch(`${API_PEDIDOS}/${id}/confirmar-pago`, {
             method: "PUT"
         });
+
+        if (!respuesta.ok) throw new Error(`El servidor respondió ${respuesta.status}`);
 
         alert("✅ Pago confirmado. El pedido ahora está marcado como 'pagado'.");
         cargarPedidos();
 
     } catch (error) {
         console.error("Error confirmando el pago:", error);
+        alert("No se pudo confirmar el pago: " + error.message);
+    }
+}
+
+// RECHAZAR PAGO (el comprobante no es válido -> se cancela el pedido)
+async function rechazarPago(id) {
+    const confirmar = confirm("¿Rechazar el pago de este pedido? El pedido quedará cancelado.");
+    if (!confirmar) return;
+
+    try {
+        const respuesta = await fetch(`${API_PEDIDOS}/${id}/rechazar-pago`, {
+            method: "PUT"
+        });
+
+        if (!respuesta.ok) throw new Error(`El servidor respondió ${respuesta.status}`);
+
+        alert("Pago rechazado. El pedido quedó marcado como 'cancelado'.");
+        cargarPedidos();
+
+    } catch (error) {
+        console.error("Error rechazando el pago:", error);
+        alert("No se pudo rechazar el pago: " + error.message);
     }
 }
 
@@ -171,7 +198,10 @@ async function verProductos(idPedido) {
             : `
                 <ul class="lista-productos-pedido">
                     ${detalles.map((d) => `
-                        <li>${d.cantidad} × ${d.nombreProducto} — $${d.subtotal}</li>
+                        <li>
+                            ${d.cantidad} × ${d.nombreProducto} — $${d.subtotal}
+                            ${d.personalizacion ? renderPersonalizacion(d.personalizacion) : ""}
+                        </li>
                     `).join("")}
                 </ul>
             `;
@@ -182,4 +212,21 @@ async function verProductos(idPedido) {
     } catch (error) {
         console.error("Error al cargar los productos del pedido:", error);
     }
+}
+
+// Muestra las especificaciones del diseño personalizado (tamaño, sabor, decoración, foto de referencia)
+function renderPersonalizacion(p) {
+    return `
+        <div class="detalle-personalizacion">
+            <strong>🎂 Personalizado</strong>
+            <ul>
+                ${p.tamano ? `<li>Tamaño: ${p.tamano}</li>` : ""}
+                ${p.sabor ? `<li>Sabor: ${p.sabor}</li>` : ""}
+                ${p.decoraciones ? `<li>Decoración: ${p.decoraciones}</li>` : ""}
+                ${p.descripcion ? `<li>Notas: ${p.descripcion}</li>` : ""}
+                ${p.costoExtra ? `<li>Costo extra: $${p.costoExtra}</li>` : ""}
+            </ul>
+            ${p.imagen ? `<img src="${p.imagen}" alt="Referencia del cliente" class="foto-referencia-personalizacion">` : "<p><small>Sin imagen de referencia</small></p>"}
+        </div>
+    `;
 }

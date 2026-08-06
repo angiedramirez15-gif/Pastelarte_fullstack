@@ -450,3 +450,23 @@
   margin: 8px 0;
   padding-left: 20px;
 }
+
+.detalle-personalizacion {
+  background: var(--admin-accent-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 6px 0 10px;
+  font-size: 0.9em;
+}
+
+.detalle-personalizacion ul {
+  margin: 4px 0;
+  padding-left: 18px;
+}
+
+.foto-referencia-personalizacion {
+  max-width: 140px;
+  border-radius: 8px;
+  margin-top: 6px;
+  display: block;
+}

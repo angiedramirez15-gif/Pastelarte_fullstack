@@ -146,6 +146,22 @@ public class PedidoService {
         return convertirAResponse(repository.save(pedido));
     }
 
+    @Transactional
+    public PedidoResponseDTO rechazarPago(Integer id) {
+
+        Pedido pedido = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El pedido con ID " + id + " no existe."));
+
+        pedido.setEstado("cancelado");
+
+        boolean esNequi = pedido.getIdPago() != null && pedido.getIdPago() == 1;
+        pedido.setMotivoCancelacion(esNequi
+                ? "Pago rechazado — el comprobante de Nequi no fue válido."
+                : "Pago rechazado por el administrador.");
+
+        return convertirAResponse(repository.save(pedido));
+    }
+
     @Transactional(readOnly = true)
     public List<PedidoResponseDTO> listarPorCliente(Integer idCliente) {
         return repository.findByCliente_IdCliente(idCliente)
@@ -185,6 +201,7 @@ public class PedidoService {
         dto.setIdPago(pedido.getIdPago());
         dto.setComprobante(pedido.getComprobante());
         dto.setNumeroNequi(pedido.getNumeroNequi());
+        dto.setMotivoCancelacion(pedido.getMotivoCancelacion());
 
         return dto;
     }

@@ -26,6 +26,9 @@ public class Producto {
     @Column(name = "imagen", columnDefinition = "LONGTEXT")
     private String imagen;
 
+    @Column(name = "porciones")
+    private String porciones;
+
     public Producto() {}
 
     public Integer getIdProducto() {
@@ -74,5 +77,13 @@ public class Producto {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String getPorciones() {
+        return porciones;
+    }
+
+    public void setPorciones(String porciones) {
+        this.porciones = porciones;
     }
 }

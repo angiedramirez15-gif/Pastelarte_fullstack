@@ -2,6 +2,7 @@ package com.pastelarte.pastelarte_api.service;
 
 import com.pastelarte.pastelarte_api.dto.DetallePedidoRequestDTO;
 import com.pastelarte.pastelarte_api.dto.DetallePedidoResponseDTO;
+import com.pastelarte.pastelarte_api.dto.PersonalizacionResponseDTO;
 import com.pastelarte.pastelarte_api.entities.DetallePedido;
 import com.pastelarte.pastelarte_api.entities.Pedido;
 import com.pastelarte.pastelarte_api.entities.Personalizacion;
@@ -134,7 +135,20 @@ public class DetallePedidoService {
         }
 
         if (detalle.getPersonalizacion() != null) {
-            dto.setIdPersonalizacion(detalle.getPersonalizacion().getIdPersonalizacion());
+            Personalizacion p = detalle.getPersonalizacion();
+
+            dto.setIdPersonalizacion(p.getIdPersonalizacion());
+
+            PersonalizacionResponseDTO personalizacionDTO = new PersonalizacionResponseDTO();
+            personalizacionDTO.setIdPersonalizacion(p.getIdPersonalizacion());
+            personalizacionDTO.setTamano(p.getTamano());
+            personalizacionDTO.setSabor(p.getSabor());
+            personalizacionDTO.setDecoraciones(p.getDecoraciones());
+            personalizacionDTO.setDescripcion(p.getDescripcion());
+            personalizacionDTO.setCostoExtra(p.getCostoExtra());
+            personalizacionDTO.setImagen(p.getImagen());
+
+            dto.setPersonalizacion(personalizacionDTO);
         }
 
         dto.setCantidad(detalle.getCantidad());

@@ -35,6 +35,11 @@ public class PedidoController {
         return service.buscar(id);
     }
 
+    @GetMapping("/cliente/{idCliente}")
+    public List<PedidoResponseDTO> listarPorCliente(@PathVariable Integer idCliente) {
+        return service.listarPorCliente(idCliente);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoResponseDTO guardar(@Valid @RequestBody PedidoRequestDTO dto) {
@@ -58,6 +63,16 @@ public class PedidoController {
     public PedidoResponseDTO actualizar(@PathVariable Integer id,
                                         @Valid @RequestBody PedidoRequestDTO dto) {
         return service.actualizar(id, dto);
+    }
+
+    @PutMapping("/{id}/confirmar-pago")
+    public PedidoResponseDTO confirmarPago(@PathVariable Integer id) {
+        return service.confirmarPago(id);
+    }
+
+    @PutMapping("/{id}/rechazar-pago")
+    public PedidoResponseDTO rechazarPago(@PathVariable Integer id) {
+        return service.rechazarPago(id);
     }
 
     @DeleteMapping("/{id}")

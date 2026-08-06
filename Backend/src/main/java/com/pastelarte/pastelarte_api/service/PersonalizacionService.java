@@ -38,6 +38,7 @@ public class PersonalizacionService {
         p.setDecoraciones(dto.getDecoraciones());
         p.setDescripcion(dto.getDescripcion());
         p.setCostoExtra(dto.getCostoExtra());
+        p.setImagen(dto.getImagen());
 
         return convertirAResponse(repository.save(p));
     }
@@ -51,6 +52,7 @@ public class PersonalizacionService {
         p.setDecoraciones(dto.getDecoraciones());
         p.setDescripcion(dto.getDescripcion());
         p.setCostoExtra(dto.getCostoExtra());
+        p.setImagen(dto.getImagen());
 
         return convertirAResponse(repository.save(p));
     }
@@ -67,6 +69,7 @@ public class PersonalizacionService {
         dto.setDecoraciones(p.getDecoraciones());
         dto.setDescripcion(p.getDescripcion());
         dto.setCostoExtra(p.getCostoExtra());
+        dto.setImagen(p.getImagen());
         return dto;
     }
 }

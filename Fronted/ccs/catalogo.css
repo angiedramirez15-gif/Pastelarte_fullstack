@@ -53,6 +53,49 @@ a {
   font-size: 1.2em;
 }
 
+.porciones-producto {
+  font-size: 0.85em;
+  color: #8a6a72;
+  margin: 4px 0 0;
+}
+
+.menu-tamanos {
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  border: 1px solid #f0d2da;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.opcion-tamano {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-bottom: 1px solid #f5e2e7;
+  background: #fff;
+  color: #5a3e36;
+  cursor: pointer;
+  font-size: 0.95em;
+  text-align: left;
+}
+
+.opcion-tamano:last-child {
+  border-bottom: none;
+}
+
+.opcion-tamano:hover {
+  background: #fdeef2;
+}
+
+.opcion-tamano span:last-child {
+  font-weight: bold;
+  color: #d9899b;
+}
+
 .submenu {
   position: relative;
   display: inline-block;

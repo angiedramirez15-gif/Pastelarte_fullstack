@@ -29,6 +29,11 @@ function registrar() {
     return;
   }
 
+  if (clave.length < 8) {
+    alert("⚠️ La contraseña debe tener al menos 8 caracteres");
+    return;
+  }
+
   const data = {
     nombre: nombre,
     correo: correo,
@@ -46,15 +51,23 @@ function registrar() {
     },
     body: JSON.stringify(data)
   })
-  .then(res => {
-    if (!res.ok) throw new Error("Error " + res.status);
+  .then(async res => {
+    if (!res.ok) {
+      // Intentamos leer el mensaje real que envía el backend (ej. "El correo ya está registrado")
+      const cuerpo = await res.json().catch(() => null);
+      const mensaje = cuerpo?.errors?.[0]?.defaultMessage || cuerpo?.message || `Error ${res.status}`;
+      throw new Error(mensaje);
+    }
     return res.json();
   })
   .then(() => {
     alert("✅ Usuario registrado");
     mostrarLogin();
   })
-  .catch(err => console.error("❌ ERROR:", err));
+  .catch(err => {
+    alert("❌ No se pudo registrar: " + err.message);
+    console.error("❌ ERROR:", err);
+  });
 }
 // LOGIN
 function iniciarSesion() {

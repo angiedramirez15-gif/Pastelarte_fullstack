@@ -24,6 +24,10 @@ public class Personalizacion {
     @Column(name = "costo_extra", precision = 10, scale = 2)
     private BigDecimal costoExtra;
 
+    @Lob
+    @Column(name = "imagen", columnDefinition = "LONGTEXT")
+    private String imagen;
+
     public Personalizacion() {}
 
     public Integer getIdPersonalizacion() {
@@ -72,5 +76,13 @@ public class Personalizacion {
 
     public void setCostoExtra(BigDecimal costoExtra) {
         this.costoExtra = costoExtra;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

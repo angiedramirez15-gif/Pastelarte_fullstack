@@ -34,6 +34,9 @@ public class Pedido {
     @Column(name = "numero_nequi")
     private String numeroNequi;
 
+    @Column(name = "motivo_cancelacion", length = 255)
+    private String motivoCancelacion;
+
     public Pedido() {}
 
     public Integer getIdPedido() {
@@ -98,5 +101,13 @@ public class Pedido {
 
     public void setNumeroNequi(String numeroNequi) {
         this.numeroNequi = numeroNequi;
+    }
+
+    public String getMotivoCancelacion() {
+        return motivoCancelacion;
+    }
+
+    public void setMotivoCancelacion(String motivoCancelacion) {
+        this.motivoCancelacion = motivoCancelacion;
     }
 }

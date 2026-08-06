@@ -34,6 +34,8 @@ btnAgregar.addEventListener("click", () => {
 
     document.getElementById("categoriaProducto").value = "";
 
+    document.getElementById("porcionesProducto").value = "";
+
     document.getElementById("fotoProducto").value = "";
 
     fotoBase64Actual = null;
@@ -113,6 +115,7 @@ async function cargarProductos() {
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Categoría</th>
+                        <th>Porciones</th>
                         <th>Precio</th>
                         <th>Acciones</th>
                     </tr>
@@ -140,6 +143,8 @@ async function cargarProductos() {
                     <td>${producto.descripcion}</td>
 
                     <td>${producto.categoria || "—"}</td>
+
+                    <td>${producto.porciones || "—"}</td>
 
                     <td>$${producto.precio}</td>
 
@@ -235,6 +240,8 @@ function editarProducto(id) {
 
     document.getElementById("categoriaProducto").value = producto.categoria || "";
 
+    document.getElementById("porcionesProducto").value = producto.porciones || "";
+
     document.getElementById("fotoProducto").value = "";
 
     fotoBase64Actual = null;
@@ -269,6 +276,9 @@ guardarProducto.addEventListener("click", async () => {
     const categoria =
         document.getElementById("categoriaProducto").value;
 
+    const porciones =
+        document.getElementById("porcionesProducto").value;
+
     // Si eligió una foto nueva se usa esa; si está editando y no cambió la foto, se conserva la que ya tenía
     const imagen = fotoBase64Actual || imagenActualEditando || null;
 
@@ -282,7 +292,8 @@ guardarProducto.addEventListener("click", async () => {
         descripcion,
         precio: Number(precio),
         categoria,
-        imagen
+        imagen,
+        porciones
     };
 
     try {

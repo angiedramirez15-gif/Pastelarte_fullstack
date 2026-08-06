@@ -20,4 +20,5 @@ public class PedidoResponseDTO {
     private Integer idPago;
     private String comprobante;
     private String numeroNequi;
+    private String motivoCancelacion;
 }

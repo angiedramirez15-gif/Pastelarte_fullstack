@@ -7,6 +7,7 @@
 
   <link rel="stylesheet" href="ccs/style.css">
   <link rel="stylesheet" href="ccs/clientes.css">
+  <link rel="stylesheet" href="ccs/catalogo.css">
 </head>
 
 <body>
@@ -56,45 +57,10 @@
  
   <section class="galeria">
     <h2>✨ Pasteles personalizados realizados</h2>
+    <p>Elige un diseño y el tamaño que quieras — se agrega directo a tu carrito, sin tener que llenar el formulario de personalización.</p>
 
-    <div class="grid-personalizados">
-
-      <div class="card-personalizado">
-        <img src="imagen/personalizados/personal1.png" alt="Personal1">
-        <h3>Pastel temático de unicornio</h3>
-        <p><strong>Cliente:</strong> Mariana Torres</p>
-      </div>
-
-      <div class="card-personalizado">
-        <img src="imagen/personalizados/personal2.png" alt="Personal2">
-        <h3>Pastel gamer para cumpleaños</h3>
-        <p><strong>Cliente:</strong> Daniel Ortiz</p>
-      </div>
-
-      <div class="card-personalizado">
-        <img src="imagen/personalizados/personal3.png" alt="Personal3">
-        <h3>Pastel floral elegante</h3>
-        <p><strong>Cliente:</strong> Laura Pérez</p>
-      </div>
-
-      <div class="card-personalizado">
-        <img src="imagen/personalizados/personal4.png" alt="Personal4">
-        <h3>Pastel infantil temática dinosaurios</h3>
-        <p><strong>Cliente:</strong> Santiago Ruiz</p>
-      </div>
-
-      <div class="card-personalizado">
-        <img src="imagen/personalizados/personal5.png" alt="Personal5">
-        <h3>Pastel minimalista chocolate</h3>
-        <p><strong>Cliente:</strong> Andrea Molina</p>
-      </div>
-
-      <div class="card-personalizado">
-        <img src="imagen/personalizados/personal6.png" alt="Persnonal6">
-        <h3>Pastel graduación</h3>
-        <p><strong>Cliente:</strong> Kevin Morales</p>
-      </div>
-
+    <div class="productos" id="contenedor-productos">
+      <p>Cargando diseños...</p>
     </div>
   </section>
 
@@ -138,6 +104,11 @@
   <footer>
     <p>📍 Cali, Colombia | ☎️ 312 000 0000 | 💌 contacto@pastelarte.com</p>
   </footer>
- <script src="js/sesion.js"></script>
+ <script src="js/carrito.js"></script>
+<script src="js/catalogo-dinamico.js"></script>
+<script>
+  cargarCatalogo("personalizado", "contenedor-productos");
+</script>
+<script src="js/sesion.js"></script>
 </body>
 </html>

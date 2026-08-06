@@ -9,18 +9,19 @@ function agregarAlCarrito(idProducto, nombre, precio, imagen) {
   alert(`${nombre} ha sido agregado al carrito 🛒`);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function renderCarrito() {
   const contenedor = document.getElementById("carrito-contenido");
-  if (contenedor) {
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  if (!contenedor) return;
 
-    if (carrito.length === 0) {
-      contenedor.innerHTML = '<p class="carrito-vacio">Tu carrito está vacío 😢</p>';
-    } else {
-      let total = 0;
-      contenedor.innerHTML = `
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  if (carrito.length === 0) {
+    contenedor.innerHTML = '<p class="carrito-vacio">Tu carrito está vacío 😢</p>';
+  } else {
+    let total = 0;
+    contenedor.innerHTML = `
         <div class="lista-carrito">
-          ${carrito.map(item => {
+          ${carrito.map((item, index) => {
         total += item.precio;
 
         let extras = "";
@@ -43,14 +44,26 @@ document.addEventListener("DOMContentLoaded", () => {
                   <p>Precio: $${item.precio.toLocaleString()}</p>
                   ${extras}
                 </div>
+                <button class="btn-quitar-item" onclick="eliminarDelCarrito(${index})" title="Quitar del carrito">✕</button>
               </div>
             `;
       }).join("")}
         </div>
         <h3>Total: $${total.toLocaleString()}</h3>
       `;
-    }
   }
+}
+
+// Quita un solo producto del carrito (por su posición en la lista) y refresca la vista
+function eliminarDelCarrito(index) {
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  carrito.splice(index, 1);
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  renderCarrito();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderCarrito();
 
   const btnVaciar = document.getElementById("vaciarCarrito");
   if (btnVaciar) {

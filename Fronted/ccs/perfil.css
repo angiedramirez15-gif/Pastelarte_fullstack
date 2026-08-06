@@ -119,6 +119,15 @@
     color: #c0392b;
 }
 
+.motivo-cancelacion {
+    font-size: 0.85em;
+    color: #c0392b;
+    background: #fbe4e4;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 4px 0;
+}
+
 /* VER MÁS */
 .btn-ver-mas {
     display: inline-block;

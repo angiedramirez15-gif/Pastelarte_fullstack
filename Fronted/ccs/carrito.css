@@ -26,12 +26,27 @@
 .item-carrito {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   background: #ffffff;
   border-radius: 12px;
   padding: 15px 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-quitar-item {
+  background: none;
+  border: none;
+  color: #c0392b;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 50%;
+  line-height: 1;
+}
+
+.btn-quitar-item:hover {
+  background: #fbe4e4;
 }
 
 .item-carrito:hover {
