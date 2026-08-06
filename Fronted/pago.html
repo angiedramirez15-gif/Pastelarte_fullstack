@@ -175,6 +175,7 @@
     // 1. Armamos la lista de detalles desde el carrito
     const detallesDTO = carrito.map(item => ({
       idProducto: item.idProducto,
+      idPersonalizacion: item.idPersonalizacion || null,
       cantidad: 1,
       subtotal: item.precio
     }));

@@ -17,6 +17,10 @@ const btnVerClientes = document.getElementById("btnVerClientes");
 const listaMensajes = document.getElementById("listaMensajes");
 const btnVerMensajes = document.getElementById("btnVerMensajes");
 
+// SOLICITUDES PERSONALIZADAS
+const listaPersonalizaciones = document.getElementById("listaPersonalizaciones");
+const btnVerPersonalizaciones = document.getElementById("btnVerPersonalizaciones");
+
 // VARIABLE GLOBAL EDITAR
 let idEditando = null;
 
@@ -27,7 +31,8 @@ const secciones = [
   formularioProducto,
   listaPedidos,
   listaClientes,
-  listaMensajes
+  listaMensajes,
+  listaPersonalizaciones
 ];
 
 // Función para ocultar todas las vistas y mostrar solo la seleccionada
@@ -70,5 +75,12 @@ if (btnVerClientes) {
 if (btnVerMensajes) {
   btnVerMensajes.addEventListener("click", () => {
     cambiarVista(listaMensajes);
+  });
+}
+
+if (btnVerPersonalizaciones) {
+  btnVerPersonalizaciones.addEventListener("click", () => {
+    cambiarVista(listaPersonalizaciones);
+    if (typeof cargarPersonalizaciones === "function") cargarPersonalizaciones();
   });
 }

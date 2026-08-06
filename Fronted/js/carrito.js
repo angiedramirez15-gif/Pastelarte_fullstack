@@ -83,43 +83,83 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formPersonalizar");
 
   if (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      let sabor = document.getElementById("sabor").value;
-      let tamano = document.getElementById("tamano").value;
-      let decoraciones = Array.from(
+      const clienteId = localStorage.getItem("clienteId");
+
+      if (!clienteId) {
+        alert("Debes iniciar sesión para enviar tu diseño.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const sabor = document.getElementById("sabor").value;
+      const tamano = document.getElementById("tamano").value;
+      const decoraciones = Array.from(
           document.querySelectorAll(".checks input:checked")
-      ).map(d => d.value);
+      ).map(d => d.value).join(", ");
+      const mensaje = document.getElementById("mensaje").value.trim();
+      const archivoImagen = document.getElementById("imagen").files[0];
 
-      let mensaje = document.getElementById("mensaje").value.trim();
-      let precio = 55000;
+      const imagenBase64 = archivoImagen ? await comprimirImagen(archivoImagen) : null;
 
-      // Usamos una ruta de imagen estática para evitar guardar Base64 pesado en el localStorage
-      guardarPastelPersonalizado(sabor, tamano, decoraciones, mensaje, "imagen/LOGO1.png", precio);
+      const solicitud = {
+        idCliente: Number(clienteId),
+        sabor,
+        tamano,
+        decoraciones,
+        descripcion: mensaje,
+        imagen: imagenBase64
+      };
+
+      try {
+        const respuesta = await fetch("http://localhost:8080/personalizaciones", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(solicitud)
+        });
+
+        if (!respuesta.ok) throw new Error(`El servidor respondió ${respuesta.status}`);
+
+        alert("🎂 ¡Tu diseño fue enviado! Te avisaremos el precio en tu perfil (sección 'Mis diseños personalizados').");
+        form.reset();
+
+      } catch (error) {
+        console.error("Error al enviar el diseño:", error);
+        alert("No se pudo enviar tu diseño. Intenta de nuevo en un momento.");
+      }
     });
   }
 });
 
-function guardarPastelPersonalizado(sabor, tamano, decoraciones, mensaje, imagen, precio) {
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+// Reduce el tamaño de la foto antes de mandarla (máx. 800px de ancho, calidad 75%)
+// para no chocar con el límite de tamaño de paquete de MySQL.
+function comprimirImagen(archivo) {
+  return new Promise((resolve) => {
+    const lector = new FileReader();
 
-  carrito.push({
-    idProducto: 27, // ID asignado al pastel personalizado
-    nombre: "Pastel Personalizado",
-    precio: precio,
-    imagen: imagen,
-    detalles: {
-      sabor,
-      tamano,
-      decoraciones,
-      mensaje
-    }
+    lector.onload = () => {
+      const imagenOriginal = new Image();
+
+      imagenOriginal.onload = () => {
+        const anchoMaximo = 800;
+        const escala = Math.min(1, anchoMaximo / imagenOriginal.width);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = imagenOriginal.width * escala;
+        canvas.height = imagenOriginal.height * escala;
+
+        canvas.getContext("2d").drawImage(imagenOriginal, 0, 0, canvas.width, canvas.height);
+
+        resolve(canvas.toDataURL("image/jpeg", 0.75));
+      };
+
+      imagenOriginal.src = lector.result;
+    };
+
+    lector.readAsDataURL(archivo);
   });
-
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  alert("Tu diseño ha sido enviado al carrito 🛒");
-  window.location.href = "carrito.html";
 }
 
 

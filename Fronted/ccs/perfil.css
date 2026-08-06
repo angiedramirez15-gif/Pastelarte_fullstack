@@ -89,6 +89,28 @@
     border-left: 4px solid #d44557;
 }
 
+.acciones-personalizacion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.acciones-personalizacion .btn-quitar-item {
+    background: #fff;
+    border: 1px solid #e8b9c2;
+    color: #c0392b;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    line-height: 1;
+}
+
+.acciones-personalizacion .btn-quitar-item:hover {
+    background: #fbe4e4;
+}
+
 .pedido-productos {
     margin: 8px 0;
     padding-left: 20px;

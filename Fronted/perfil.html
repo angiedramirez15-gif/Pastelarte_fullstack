@@ -104,6 +104,13 @@
 
   </div>
 
+  <div class="perfil-card">
+    <h2>🎂 Mis diseños personalizados</h2>
+    <div id="personalizaciones" class="pedidos-lista">
+      <p><small>Cargando...</small></p>
+    </div>
+  </div>
+
 </section>
 
 
@@ -186,6 +193,44 @@
 
   });
 
+  // MIS DISEÑOS PERSONALIZADOS
+
+  const ESTADOS_PERSONALIZACION = {
+    pendiente_cotizacion: "Esperando cotización",
+    cotizado: "¡Ya tiene precio!",
+    aceptado: "Aceptado — listo para pagar"
+  };
+
+  fetch(`http://localhost:8080/personalizaciones/cliente/${clienteId}`)
+  .then(res => res.json())
+  .then(solicitudes => {
+
+      const contenedor = document.getElementById("personalizaciones");
+
+      if (solicitudes.length === 0) {
+          contenedor.innerHTML = "<p><small>Todavía no has enviado ningún diseño. Ve a la sección Personalizar para crear uno.</small></p>";
+          return;
+      }
+
+      contenedor.innerHTML = solicitudes.map(s => `
+          <div class="pedido-item">
+              <p><strong>${s.sabor || "Diseño"} — ${s.tamano || ""}</strong></p>
+              <p>Estado: <span class="estado ${s.estado}">${ESTADOS_PERSONALIZACION[s.estado] || s.estado}</span></p>
+              ${s.costoExtra ? `<p>Precio cotizado: $${s.costoExtra}</p>` : ""}
+              <div class="acciones-personalizacion">
+                  ${(s.estado === "cotizado" || s.estado === "aceptado") ? `
+                      <button class="btn-editar" onclick="aceptarPersonalizacion(${s.idPersonalizacion}, '${s.sabor || "Diseño personalizado"}', ${s.costoExtra}, '${s.imagen || ""}')">
+                          ${s.estado === "aceptado" ? "Volver a agregar al carrito" : "Aceptar y continuar al carrito"}
+                      </button>
+                  ` : ""}
+                  <button class="btn-quitar-item" onclick="eliminarPersonalizacion(${s.idPersonalizacion})" title="Quitar de mi historial">✕</button>
+              </div>
+          </div>
+      `).join("");
+
+  })
+  .catch(err => console.error("Error al cargar personalizaciones:", err));
+
   }
   function editarPerfil() {
 
@@ -223,6 +268,53 @@ fetch(`http://localhost:8080/clientes/${clienteId}`)
     location.reload();
   })
   .catch(err => console.error("❌ Error:", err));
+}
+
+// ⚠️ Reemplaza este número por el id_producto que te dio la consulta
+// del script "crear_producto_base_personalizado.sql"
+const ID_PRODUCTO_PERSONALIZADO_BASE = 35;
+
+async function eliminarPersonalizacion(idPersonalizacion) {
+
+  const confirmar = confirm("¿Quitar este diseño de tu historial? Esta acción no se puede deshacer.");
+  if (!confirmar) return;
+
+  try {
+    await fetch(`http://localhost:8080/personalizaciones/${idPersonalizacion}`, {
+      method: "DELETE"
+    });
+    location.reload();
+  } catch (error) {
+    console.error("Error al eliminar la personalización:", error);
+    alert("No se pudo quitar el diseño. Intenta de nuevo.");
+  }
+}
+
+async function aceptarPersonalizacion(idPersonalizacion, sabor, costoExtra, imagen) {
+
+  try {
+    await fetch(`http://localhost:8080/personalizaciones/${idPersonalizacion}/aceptar`, {
+      method: "PUT"
+    });
+
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    carrito.push({
+      idProducto: ID_PRODUCTO_PERSONALIZADO_BASE,
+      idPersonalizacion: idPersonalizacion,
+      nombre: `Pastel personalizado (${sabor})`,
+      precio: costoExtra,
+      imagen: imagen || "imagen/LOGO1.png"
+    });
+
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+
+    window.location.href = "carrito.html";
+
+  } catch (error) {
+    console.error("Error al aceptar la cotización:", error);
+    alert("No se pudo continuar. Intenta de nuevo.");
+  }
 }
 </script>
 

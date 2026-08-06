@@ -28,6 +28,12 @@ public class Personalizacion {
     @Column(name = "imagen", columnDefinition = "LONGTEXT")
     private String imagen;
 
+    @Column(name = "id_cliente")
+    private Integer idCliente;
+
+    // pendiente_cotizacion -> cotizado -> aceptado
+    private String estado;
+
     public Personalizacion() {}
 
     public Integer getIdPersonalizacion() {
@@ -84,5 +90,21 @@ public class Personalizacion {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
