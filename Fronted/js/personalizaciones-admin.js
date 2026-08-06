@@ -40,12 +40,28 @@ async function cargarPersonalizaciones() {
                             <button class="btn-editar" onclick="cotizarPersonalizacion(${s.idPersonalizacion})">Enviar cotización</button>
                         </div>
                     ` : `<p><strong>Precio cotizado:</strong> $${s.costoExtra ?? "—"}</p>`}
+
+                    <button class="btn-eliminar" onclick="eliminarPersonalizacionAdmin(${s.idPersonalizacion})">Eliminar</button>
                 </div>
             </div>
         `).join("");
 
     } catch (error) {
         console.error("Error al cargar las solicitudes personalizadas:", error);
+    }
+}
+
+async function eliminarPersonalizacionAdmin(id) {
+
+    const confirmar = confirm("¿Eliminar esta solicitud de personalización?");
+    if (!confirmar) return;
+
+    try {
+        await fetch(`${API_PERSONALIZACIONES}/${id}`, { method: "DELETE" });
+        cargarPersonalizaciones();
+    } catch (error) {
+        console.error("Error al eliminar:", error);
+        alert("No se pudo eliminar la solicitud.");
     }
 }
 
